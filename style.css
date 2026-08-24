@@ -109,17 +109,20 @@ body::after {
     will-change: transform;
 }
 
-/* إخفاء مؤشر المعالج وتوهجه نهائياً على الهواتف والأجهزة اللمسية */
+/* إخفاء الشعار ومؤشر المعالج وتأثيراتهما نهائياً على الهواتف */
 @media (max-width: 768px), (pointer: coarse) {
     .mesora-cursor-cpu,
     .mesora-global-glow,
     #mesora-cursor-cpu,
-    #mesora-global-glow {
+    #mesora-global-glow,
+    .hero-3d-wrap,
+    .logo-outer-circle,
+    .logo-glow-ring,
+    .logo-gradient-border {
         display: none !important;
         opacity: 0 !important;
         visibility: hidden !important;
         pointer-events: none !important;
-        width: 0 !important;
         height: 0 !important;
         overflow: hidden !important;
     }
