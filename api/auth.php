@@ -7,6 +7,20 @@
  *   GET  /api/auth.php?action=me
  */
 
+// مثال داخل api/products.php
+require_once __DIR__ . '/db.php';
+
+// استعلام لتمكين جلب جميع المنتجات من قاعدة البيانات
+try {
+    $stmt = $pdo->query("SELECT * FROM products WHERE is_featured = 1");
+    $products = $stmt->fetchAll();
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['success' => true, 'data' => $products]);
+} catch (\PDOException $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+}
+
 require_once __DIR__ . '/config.php';
 
 $action = $_GET['action'] ?? '';
