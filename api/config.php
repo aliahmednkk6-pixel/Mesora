@@ -4,33 +4,12 @@
  * ضع بيانات الاتصال الخاصة بك هنا
  */
 
-// ===== إعدادات قاعدة البيانات =====
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'mesora_store');
-define('DB_USER', 'root');
-define('DB_PASS', '');           // غيّرها حسب سيرفرك
-
 // ===== إعدادات عامة =====
 define('UPLOAD_DIR', __DIR__ . '/../picture/uploads/');
 define('MAX_UPLOAD_SIZE', 5 * 1024 * 1024); // 5MB
 
-// ===== اتصال قاعدة البيانات (PDO) =====
-function db(): PDO {
-    static $pdo = null;
-    if ($pdo === null) {
-        $pdo = new PDO(
-            'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-            DB_USER,
-            DB_PASS,
-            [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-            ]
-        );
-    }
-    return $pdo;
-}
+// ===== اتصال قاعدة البيانات — يُحمّل من api/db.php (ملف واحد) =====
+require_once __DIR__ . '/db.php';
 
 // ===== JSON Response Helper =====
 function json_response($data, int $code = 200): void {
