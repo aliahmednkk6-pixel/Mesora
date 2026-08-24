@@ -109,6 +109,17 @@ body::after {
     will-change: transform;
 }
 
+/* إخفاء مؤشر المعالج وتوهجه نهائياً على الهواتف والأجهزة اللمسية */
+@media (max-width: 768px), (pointer: coarse) {
+    .mesora-cursor-cpu,
+    .mesora-global-glow {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
+
 .mesora-spotlight-card,
 .builder-group {
     position: relative;

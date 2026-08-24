@@ -43,7 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ultra-Vibrant Interactive Mouse Spotlight & Cursor Engine
     // ==========================================================================
     const initSpotlightEffect = () => {
-        if (prefersReducedMotion) return;
+        if (prefersReducedMotion || isSmallScreen) {
+            const cpuEl = document.getElementById("mesora-cursor-cpu");
+            if (cpuEl) cpuEl.remove();
+            const glowEl = document.getElementById("mesora-global-glow");
+            if (glowEl) glowEl.remove();
+            return;
+        }
 
         const selectors = [
             ".mesora-product-card",
