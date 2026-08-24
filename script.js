@@ -130,17 +130,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let lastX = 0;
         let rafId = 0;
-        window.addEventListener("pointermove", (e) => {
+
+        const updateCursorPos = (clientX, clientY) => {
             if (rafId) return;
             rafId = requestAnimationFrame(() => {
                 rafId = 0;
-                const deltaX = e.clientX - lastX;
+                const deltaX = clientX - lastX;
                 const tilt = Math.max(-18, Math.min(18, deltaX * 0.9));
-                lastX = e.clientX;
+                lastX = clientX;
 
-                mouseGlow.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-                cpuCursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) rotate(${tilt}deg)`;
+                mouseGlow.style.transform = `translate3d(${clientX}px, ${clientY}px, 0)`;
+                cpuCursor.style.transform = `translate3d(${clientX}px, ${clientY}px, 0) rotate(${tilt}deg)`;
             });
+        };
+
+        // Desktop Mouse Movement
+        window.addEventListener("pointermove", (e) => {
+            if (e.pointerType === "touch") return; // Touch handled by touch events below
+            mouseGlow.style.opacity = "0.95";
+            cpuCursor.style.opacity = "0.95";
+            updateCursorPos(e.clientX, e.clientY);
+        }, { passive: true });
+
+        // Mobile Touch Tracking — يتابع حركة الإصبع بدقة ومسلاسة على الموبايل
+        window.addEventListener("touchstart", (e) => {
+            if (e.touches && e.touches[0]) {
+                mouseGlow.style.opacity = "0.95";
+                cpuCursor.style.opacity = "0.95";
+                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (e) => {
+            if (e.touches && e.touches[0]) {
+                mouseGlow.style.opacity = "0.95";
+                cpuCursor.style.opacity = "0.95";
+                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener("touchend", () => {
+            mouseGlow.style.opacity = "0";
+            cpuCursor.style.opacity = "0";
+        }, { passive: true });
+
+        window.addEventListener("touchcancel", () => {
+            mouseGlow.style.opacity = "0";
+            cpuCursor.style.opacity = "0";
         }, { passive: true });
     };
 
