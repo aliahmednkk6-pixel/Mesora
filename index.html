@@ -117,13 +117,23 @@
             border-radius: 50%;
             object-fit: cover;
         }
-        img {
-            max-width: 100%;
-            height: auto;
+        @media (max-width: 768px) {
+            .hero-3d-wrap,
+            .logo-outer-circle,
+            .mesora-cursor-cpu,
+            .mesora-global-glow,
+            #mesora-cursor-cpu,
+            #mesora-global-glow {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                opacity: 0 !important;
+                overflow: hidden !important;
+            }
         }
     </style>
-    <link rel="preload" href="style.css" as="style">
-    <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="style.css?v=1.0.5" as="style">
+    <link rel="stylesheet" href="style.css?v=1.0.5">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -1915,7 +1925,7 @@
     <div class="mesora-toast" id="mesora-toast" role="status" aria-live="polite"></div>
 
     <script src="vendor/lucide.min.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="script.js?v=1.0.5" defer></script>
     <script>
     // ===== إتمام الطلب داخل الموقع (يحفظ في قاعدة البيانات) =====
     document.addEventListener('DOMContentLoaded', function () {
