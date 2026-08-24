@@ -2695,7 +2695,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const cpuCursor = document.getElementById('mesora-cursor-cpu');
             if (!cpuCursor) return;
 
-            if (shape === 'off') {
+            if (shape === 'off' || isSmallScreen) {
                 cpuCursor.style.display = 'none';
             } else {
                 cpuCursor.style.display = '';
@@ -2908,17 +2908,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Apply saved cursor shape on page load
+        if (isSmallScreen) {
+            const cpuCursor = document.getElementById('mesora-cursor-cpu');
+            if (cpuCursor) cpuCursor.style.display = 'none';
+        }
         const savedCursorShape = localStorage.getItem('mesora_cursor_shape');
         if (savedCursorShape && savedCursorShape !== 'cpu') {
             setTimeout(() => {
-                const cpuCursor = document.getElementById('mesora-cursor-cpu');
-                if (cpuCursor) {
-                    if (savedCursorShape === 'off') {
-                        cpuCursor.style.display = 'none';
-                    } else {
-                        cpuCursor.innerHTML = CURSOR_SVGS[savedCursorShape] || CURSOR_SVGS.cpu;
-                    }
-                }
+                applyCursorShape(savedCursorShape);
                 updateCursorPreview(savedCursorShape);
                 highlightCursorShape(savedCursorShape);
             }, 50);
