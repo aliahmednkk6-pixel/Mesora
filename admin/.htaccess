@@ -1,0 +1,26 @@
+# حماية مجلد لوحة التحكم
+Options -Indexes
+
+# منع الوصول لأي ملفات حساسة
+<FilesMatch "\.(sql|log|md|bak|ini)$">
+    Require all denied
+</FilesMatch>
+
+# منع تنفيذ PHP في مجلد الصور المرفوعة (إن وُجد)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+</IfModule>
+
+# ============================================================
+# لحماية إضافية على السيرفر الحقيقي (الاستضافة):
+# فعّل Basic Auth بإزالة التعليق أدناه وإنشاء ملف .htpasswd:
+#
+# AuthType Basic
+# AuthName "MESORA Admin Area"
+# AuthUserFile /full/path/to/.htpasswd
+# Require valid-user
+#
+# لإنشاء كلمة مرور مشفرة على Linux:
+#   htpasswd -c /path/.htpasswd admin
+# أو استخدم: https://htpasswd-generator.com
+# ============================================================

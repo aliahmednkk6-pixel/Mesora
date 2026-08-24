@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Block sensitive/private files
+Disallow: /picture/Codex Installer.exe
+Disallow: /picture/mesora-project-fixed.zip
+Disallow: /picture/mesora-source.zip
+
+# Block scripts
+Disallow: /script.js
+
+Sitemap: https://mesora.iq/sitemap.xml
