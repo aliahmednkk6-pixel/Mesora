@@ -60,7 +60,8 @@ if ($method === 'GET') {
     $limit = isset($_GET['limit']) ? 'LIMIT ' . (int)$_GET['limit'] : '';
 
     $stmt = $pdo->query(
-        "SELECT p.id, p.sku, p.name_ar, p.description_ar, p.selling_price, p.discount_price,
+                "SELECT p.id, p.sku, p.name_ar, p.description_ar, p.selling_price, p.discount_price,
+                p.deal_ends_at,
                 p.stock_quantity, p.condition_type, p.warranty_months, p.main_image,
                 p.rating_avg, p.reviews_count, c.slug AS category_slug, c.name_ar AS category_name,
                 b.name AS brand_name
@@ -150,7 +151,7 @@ if ($method === 'PUT') {
     if (!$id) json_error('معرّف المنتج مطلوب');
 
     $allowed = ['name_ar', 'name_en', 'description_ar', 'category_id', 'brand_id',
-                'cost_price', 'selling_price', 'discount_price', 'stock_quantity',
+                'cost_price', 'selling_price', 'discount_price', 'deal_ends_at', 'stock_quantity',
                 'condition_type', 'warranty_months', 'main_image', 'is_featured', 'is_active'];
 
     $sets = [];
@@ -165,6 +166,9 @@ if ($method === 'PUT') {
                 $val = $val === null || $val === '' ? null : (float)$val;
             } elseif (in_array($field, ['is_featured', 'is_active'])) {
                 $val = (int)(bool)$val;
+            } elseif ($field === 'deal_ends_at') {
+                // يقبل صيغة DATETIME أو يفرّغه لإلغاء العرض
+                $val = $val === null || $val === '' ? null : date('Y-m-d H:i:s', strtotime($val));
             }
             $params[] = $val;
         }

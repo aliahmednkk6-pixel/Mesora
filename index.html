@@ -649,25 +649,36 @@
                         <span class="px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-extrabold border border-red-500/30 uppercase tracking-wide">عروض خاطفة - FLASH SALE</span>
                         <h3 class="text-xl md:text-2xl font-black text-white mt-1">تخفيضات اليوم على قطع الكمبيوتر</h3>
                         <p class="text-xs text-[#8A9AAD]">احصل على أسعار استثنائية لفترة محدودة جداً</p>
+                        <!-- عدّاد الكمية المتبقية — يتحدث من قاعدة البيانات -->
+                        <p id="flash-stock-note" class="text-xs font-bold mt-1.5 hidden"></p>
                     </div>
                 </div>
 
-                <!-- Live Countdown Timer -->
-                <div class="flex items-center gap-2" id="flash-countdown-timer">
-                    <div class="timer-box">
-                        <div class="timer-num" id="timer-hours">08</div>
-                        <div class="timer-label">ساعة</div>
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <!-- Live Countdown Timer -->
+                    <div class="flex items-center gap-2" id="flash-countdown-timer">
+                        <div class="timer-box">
+                            <div class="timer-num" id="timer-hours">08</div>
+                            <div class="timer-label">ساعة</div>
+                        </div>
+                        <span class="text-red-400 font-bold text-lg">:</span>
+                        <div class="timer-box">
+                            <div class="timer-num" id="timer-minutes">45</div>
+                            <div class="timer-label">دقيقة</div>
+                        </div>
+                        <span class="text-red-400 font-bold text-lg">:</span>
+                        <div class="timer-box">
+                            <div class="timer-num" id="timer-seconds">30</div>
+                            <div class="timer-label">ثانية</div>
+                        </div>
                     </div>
-                    <span class="text-red-400 font-bold text-lg">:</span>
-                    <div class="timer-box">
-                        <div class="timer-num" id="timer-minutes">45</div>
-                        <div class="timer-label">دقيقة</div>
-                    </div>
-                    <span class="text-red-400 font-bold text-lg">:</span>
-                    <div class="timer-box">
-                        <div class="timer-num" id="timer-seconds">30</div>
-                        <div class="timer-label">ثانية</div>
-                    </div>
+
+                    <!-- مشاركة العرض على واتساب -->
+                    <button type="button" id="flash-share-btn"
+                        class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366]/15 border border-[#25D366]/40 text-[#25D366] text-xs font-bold hover:bg-[#25D366] hover:text-[#0a0f14] transition-all cursor-pointer"
+                        title="شارك العرض على واتساب" aria-label="مشاركة العرض على واتساب">
+                        <i data-lucide="share-2" class="w-4 h-4"></i> شارك العرض
+                    </button>
                 </div>
             </div>
         </section>
@@ -2174,6 +2185,102 @@
                         }).join('');
                         list.insertAdjacentHTML('afterbegin', dbReviews);
                     });
+
+                // ===== قسم التخفيضات: مؤقّت حقيقي + عدّاد الكمية + المشاركة =====
+                // 1) تحديد نهاية العرض: من قاعدة البيانات (deal_ends_at)
+                //    وإن لم يُضبط: نهاية اليوم الحالي (عرض يومي متجدد تلقائياً)
+                var dealEnd = null;
+                var withDeal = products.filter(function (p) { return p.deal_ends_at; });
+                if (withDeal.length) {
+                    withDeal.forEach(function (p) {
+                        var d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
+                        if (!isNaN(d.getTime()) && d.getTime() > Date.now() &&
+                            (dealEnd === null || d.getTime() < dealEnd)) {
+                            dealEnd = d.getTime(); // أقرب عرض ينتهي
+                        }
+                    });
+                }
+                var isDbDeal = dealEnd !== null;
+                if (!isDbDeal) {
+                    var eod = new Date();
+                    eod.setHours(23, 59, 59, 999);
+                    dealEnd = eod.getTime();
+                }
+
+                var tH = document.getElementById('timer-hours');
+                var tM = document.getElementById('timer-minutes');
+                var tS = document.getElementById('timer-seconds');
+                var pad2 = function (n) { return String(n).padStart(2, '0'); };
+                var tickFlash = function () {
+                    var diff = dealEnd - Date.now();
+                    if (diff <= 0) {
+                        if (!isDbDeal) {
+                            // العرض اليومي انتهى → يبدأ عرض الغد تلقائياً
+                            var next = new Date();
+                            next.setHours(23, 59, 59, 999);
+                            next.setDate(next.getDate() + 1);
+                            dealEnd = next.getTime();
+                            diff = dealEnd - Date.now();
+                        } else {
+                            // انتهى عرض قاعدة البيانات فعلياً
+                            if (tH) tH.textContent = '00';
+                            if (tM) tM.textContent = '00';
+                            if (tS) tS.textContent = '00';
+                            return;
+                        }
+                    }
+                    if (tH) tH.textContent = pad2(Math.floor(diff / 3600000));
+                    if (tM) tM.textContent = pad2(Math.floor(diff / 60000) % 60);
+                    if (tS) tS.textContent = pad2(Math.floor(diff / 1000) % 60);
+                };
+                tickFlash();
+                setInterval(tickFlash, 1000);
+
+                // 2) عدّاد "بقي X قطعة" — أقل مخزون بين المنتجات المخفّضة
+                var stockNote = document.getElementById('flash-stock-note');
+                if (stockNote) {
+                    var deals = products.filter(function (p) {
+                        return p.discount_price && Number(p.discount_price) > 0;
+                    });
+                    if (deals.length) {
+                        var minStock = Math.min.apply(null, deals.map(function (p) {
+                            return Number(p.stock_quantity) || 0;
+                        }));
+                        if (minStock <= 0) {
+                            stockNote.textContent = '⛔ نفدت كمية العرض — تابعنا للعروض القادمة';
+                            stockNote.style.color = '#f87171';
+                        } else if (minStock <= 3) {
+                            stockNote.textContent = '🔥 بقي ' + minStock + ' قطع فقط بهذا السعر!';
+                            stockNote.style.color = '#f87171';
+                        } else {
+                            stockNote.textContent = '✅ متوفر حالياً — بقي ' + minStock + ' قطع';
+                            stockNote.style.color = '#34d399';
+                        }
+                        stockNote.classList.remove('hidden');
+                    }
+                }
+
+                // 3) مشاركة العرض على واتساب
+                var shareBtn = document.getElementById('flash-share-btn');
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', function () {
+                        var cheapest = null;
+                        products.forEach(function (p) {
+                            if (p.discount_price && Number(p.discount_price) > 0 &&
+                                (!cheapest || Number(p.discount_price) < Number(cheapest.discount_price))) {
+                                cheapest = p;
+                            }
+                        });
+                        var lines = ['⚡ عروض خاطفة على قطع الكمبيوتر - متجر ميسورا'];
+                        if (cheapest) {
+                            lines.push('🔥 ' + cheapest.name_ar +
+                                ' بـ ' + Number(cheapest.discount_price).toLocaleString('en-US') + ' د.ع');
+                        }
+                        lines.push('⏰ العرض لفترة محدودة!');
+                        lines.push(location.origin + location.pathname + '#flash-deals');
+                        window.open('https://wa.me/?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
+                    });
+                }
 
                 // ===== أعداد الفئات الحقيقية من قاعدة البيانات + الصور والمعاينة =====
                 var counts = {};
