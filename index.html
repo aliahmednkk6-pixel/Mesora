@@ -2096,6 +2096,7 @@
                         card.setAttribute('data-name', p.name_ar);
                         card.setAttribute('data-price', price);
                         card.setAttribute('data-stock', inStock ? 'available' : 'out');
+                        card.setAttribute('data-condition', used ? 'used' : 'new');
                         card.setAttribute('data-id', p.id);
                         card.innerHTML =
                             '<div class="mesora-product-image">' +
@@ -2114,7 +2115,7 @@
                                 '</div>' +
                                 '<div class="mesora-product-footer flex items-center gap-2">' +
                                     '<button type="button" class="mesora-quick-view-btn p-2 rounded-lg bg-[rgba(0,163,196,0.12)] border border-[rgba(0,163,196,0.3)] text-[#00E5FF] hover:bg-[#00A3C4] hover:text-[#0a0f14] transition-all cursor-pointer" title="معاينة سريعة" aria-label="معاينة سريعة"><i data-lucide="eye" class="w-4 h-4"></i></button>' +
-                                    '<button type="button" onclick="addToCompare(\'' + p.name_ar.replace(/'/g, "\\'") + '\', ' + price + ', \'' + (p.category_slug || '') + '\', \'' + (used ? 'used' : 'new') + '\')" class="p-2 rounded-lg bg-[rgba(197,160,89,0.12)] border border-[rgba(197,160,89,0.3)] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0a0f14] transition-all cursor-pointer" title="مقارنة المنتج"><i data-lucide="git-compare" class="w-4 h-4"></i></button>' +
+                                    '<button type="button" class="mesora-compare-trigger p-2 rounded-lg bg-[rgba(197,160,89,0.12)] border border-[rgba(197,160,89,0.3)] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0a0f14] transition-all cursor-pointer" title="مقارنة المنتج" aria-label="مقارنة المنتج"><i data-lucide="git-compare" class="w-4 h-4"></i></button>' +
                                     '<button type="button" class="mesora-product-btn" data-product="' + p.name_ar + '" aria-label="أضف للسلة"' + (inStock ? '' : ' disabled') + '><i data-lucide="shopping-cart"></i></button>' +
                                     '<a href="#" class="mesora-order-whatsapp flex-1 justify-center" data-product="' + p.name_ar + '" data-price="' + price + '" data-stock="' + (inStock ? 'available' : 'out') + '" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle" aria-hidden="true"></i> اطلب الآن</a>' +
                                 '</div>' +

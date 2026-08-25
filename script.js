@@ -495,98 +495,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const productCards = document.querySelectorAll(".mesora-product-card");
     const filterNote = document.querySelector("#featured-filter-note");
 
-    // ==========================================================================
-    // Feature 10: Product Comparison Engine
-    // ==========================================================================
-    const compareOverlay = document.getElementById("compare-overlay");
-    const compareModal = document.getElementById("compare-modal");
-    const compareClose = document.getElementById("compare-close");
-    const compareContent = document.getElementById("compare-content");
-    let compareList = [];
-
-    const openCompare = () => {
-        if (!compareOverlay || !compareModal) return;
-        compareOverlay.classList.remove("opacity-0", "pointer-events-none");
-        compareModal.classList.remove("opacity-0", "pointer-events-none", "scale-95");
-        compareModal.classList.add("scale-100");
-        document.body.style.overflow = "hidden";
-    };
-
-    const closeCompare = () => {
-        if (!compareOverlay || !compareModal) return;
-        compareOverlay.classList.add("opacity-0", "pointer-events-none");
-        compareModal.classList.add("opacity-0", "pointer-events-none", "scale-95");
-        compareModal.classList.remove("scale-100");
-        document.body.style.overflow = "";
-    };
-
-    if (compareClose) compareClose.addEventListener("click", closeCompare);
-    if (compareOverlay) compareOverlay.addEventListener("click", closeCompare);
-
-    // Add compare button to each product card
-    productCards.forEach(card => {
-        const footer = card.querySelector(".mesora-product-footer");
-        if (footer) {
-            const compareBtn = document.createElement("button");
-            compareBtn.type = "button";
-            compareBtn.className = "mesora-compare-btn p-2 rounded-lg bg-[rgba(197,160,89,0.12)] border border-[rgba(197,160,89,0.3)] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0a0f14] transition-all cursor-pointer";
-            compareBtn.title = "مقارنة المنتج";
-            compareBtn.setAttribute("aria-label", "مقارنة المنتج");
-            compareBtn.innerHTML = '<i data-lucide="scale" class="w-4 h-4"></i>';
-            footer.prepend(compareBtn);
-        }
-    });
-
-    document.addEventListener("click", (e) => {
-        const compareBtn = e.target.closest(".mesora-compare-btn");
-        if (compareBtn) {
-            e.preventDefault();
-            const card = compareBtn.closest(".mesora-product-card");
-            if (!card) return;
-            const name = card.dataset.name || card.querySelector("h3")?.textContent || "منتج";
-            const price = card.dataset.price || "0";
-            const img = card.querySelector("img")?.getAttribute("src") || "picture/logo.png";
-            const rating = card.dataset.rating || "0";
-            const reviews = card.dataset.reviews || "0";
-            const stock = card.dataset.stock || "available";
-
-            if (compareList.some(item => item.name === name)) {
-                showToast("⚠️ هذا المنتج موجود بالفعل في المقارنة");
-                return;
-            }
-            if (compareList.length >= 2) {
-                showToast("⚠️ يمكن مقارنة منتجين فقط في نفس الوقت");
-                return;
-            }
-
-            compareList.push({ name, price, img, rating, reviews, stock });
-            showToast(`تمت إضافة "${name}" للمقارنة (${compareList.length}/2)`);
-
-            if (compareList.length === 2) {
-                compareContent.innerHTML = compareList.map(item => `
-                    <div class="bg-[#111922] border border-[rgba(0,163,196,0.2)] rounded-xl p-4">
-                        <img src="${item.img}" alt="${item.name}" class="w-full h-32 object-contain rounded-lg bg-[#0a0f14] p-2 mb-3">
-                        <h5 class="text-sm font-bold text-white mb-2">${item.name}</h5>
-                        <div class="space-y-2 text-xs">
-                            <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                <span class="text-[#8A9AAD]">السعر</span>
-                                <span class="font-mono text-[#C5A059] font-bold">${Number(item.price).toLocaleString("ar-IQ")} د.ع</span>
-                            </div>
-                            <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                <span class="text-[#8A9AAD]">التقييم</span>
-                                <span class="text-[#C5A059] font-bold">${item.rating} ★ (${item.reviews})</span>
-                            </div>
-                            <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                <span class="text-[#8A9AAD]">الحالة</span>
-                                <span class="${item.stock === 'available' ? 'text-emerald-400' : 'text-amber-400'} font-bold">${item.stock === 'available' ? 'متوفر' : 'آخر قطعة'}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join("");
-                openCompare();
-            }
-        }
-    });
+    // (Feature 10 old compare engine removed: it redeclared compareList/compareModal
+    // in this same scope as the unified compare system below, producing a fatal
+    // "Identifier has already been declared" SyntaxError, and referenced elements
+    // that do not exist. Comparison is now handled by the drawer/modal system below.)
 
     // ==========================================================================
     // Feature 11: Order Tracking Engine
@@ -1657,7 +1569,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         
         // Compare buttons
-        document.querySelectorAll('.mesora-compare-btn').forEach(btn => {
+        document.querySelectorAll('.mesora-compare-trigger').forEach(btn => {
             btn.style.color = teal;
             btn.style.borderColor = `${teal}4D`;
         });
@@ -3129,6 +3041,21 @@ document.addEventListener("DOMContentLoaded", () => {
         compareList.push({ name, price, category, condition });
         updateCompareUI();
     };
+
+    // Delegated handler for the compare buttons on dynamically-rendered product
+    // cards. Reads the product data from the card's data-* attributes instead of
+    // fragile inline onclick strings (which broke when names contained quotes).
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.mesora-compare-trigger');
+        if (!trigger) return;
+        const card = trigger.closest('.mesora-product-card');
+        if (!card) return;
+        const name = card.getAttribute('data-name') || 'منتج';
+        const price = Number(card.getAttribute('data-price')) || 0;
+        const category = card.getAttribute('data-category') || 'عام';
+        const condition = card.getAttribute('data-condition') || 'new';
+        window.addToCompare(name, price, category, condition);
+    });
 
     function updateCompareUI() {
         if (!compareDrawer || !compareCount) return;
