@@ -271,6 +271,8 @@
         <div class="nav-group-title">العمليات</div>
         <a class="nav-item" data-view="orders" onclick="switchView('orders')">📦 <span>الطلبات</span> <span class="badge">3</span></a>
         <a class="nav-item" data-view="products" onclick="switchView('products')">🛒 <span>المنتجات</span></a>
+        <a class="nav-item" data-view="deals" onclick="switchView('deals')">🔥 <span>التخفيضات</span></a>
+        <a class="nav-item" data-view="cats" onclick="switchView('cats')">🗂️ <span>الفئات</span></a>
         <a class="nav-item" data-view="inventory" onclick="switchView('inventory')">📋 <span>المخزون</span></a>
         <a class="nav-item" data-view="customers" onclick="switchView('customers')">👥 <span>العملاء</span></a>
 
@@ -574,6 +576,7 @@
     // ===== التنقل =====
     const viewTitles = {
         dashboard: 'نظرة عامة', orders: 'إدارة الطلبات', products: 'إدارة المنتجات',
+        deals: 'إدارة التخفيضات', cats: 'إدارة الفئات',
         inventory: 'المخزون', customers: 'العملاء', coupons: 'الكوبونات',
         reviews: 'التقييمات', expenses: 'المصروفات', reports: 'التقارير', settings: 'الإعدادات'
     };
@@ -589,6 +592,8 @@
         if (name === 'coupons') loadCoupons();
         if (name === 'reviews') loadReviews();
         if (name === 'reports') loadCharts();
+        if (name === 'deals') loadDeals();
+        if (name === 'cats') loadCats();
     }
 
     // ===== الإحصائيات الحقيقية =====
