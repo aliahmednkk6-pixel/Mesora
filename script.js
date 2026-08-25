@@ -2923,4 +2923,290 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     initCustomizer();
+
+    // ==========================================================================
+    // 1. Flash Deals Live Countdown Timer
+    // ==========================================================================
+    function startFlashTimer() {
+        let hours = 8, minutes = 45, seconds = 30;
+        const hEl = document.getElementById('timer-hours');
+        const mEl = document.getElementById('timer-minutes');
+        const sEl = document.getElementById('timer-seconds');
+        if (!hEl || !mEl || !sEl) return;
+
+        setInterval(() => {
+            if (seconds > 0) {
+                seconds--;
+            } else {
+                seconds = 59;
+                if (minutes > 0) {
+                    minutes--;
+                } else {
+                    minutes = 59;
+                    if (hours > 0) hours--;
+                    else hours = 12;
+                }
+            }
+            hEl.textContent = String(hours).padStart(2, '0');
+            mEl.textContent = String(minutes).padStart(2, '0');
+            sEl.textContent = String(seconds).padStart(2, '0');
+        }, 1000);
+    }
+    startFlashTimer();
+
+    // ==========================================================================
+    // 2. PC Builder Wattage Calculator & PDF Export
+    // ==========================================================================
+    const builderWattageMap = {
+        'Intel Core i5-13400F': 65,
+        'Intel Core i7-14700K': 125,
+        'AMD Ryzen 7 7800X3D': 120,
+        'NVIDIA RTX 4060 8GB': 115,
+        'NVIDIA RTX 4070 Super 12GB': 220,
+        'NVIDIA RTX 4080 Super 16GB': 320
+    };
+
+    function updateBuilderCompatibilityAndWattage() {
+        const cpuSelect = document.querySelector('select[name="builder-cpu"]');
+        const mbSelect = document.querySelector('select[name="builder-mb"]');
+        const gpuSelect = document.querySelector('select[name="builder-gpu"]');
+        const psuSelect = document.querySelector('select[name="builder-psu"]');
+
+        const compatBox = document.getElementById('builder-compatibility-box');
+        const compatStatus = document.getElementById('builder-compat-status');
+        const wattsEl = document.getElementById('builder-total-watts');
+        const psuStatus = document.getElementById('builder-psu-status');
+        const compatMsg = document.getElementById('builder-compat-msg');
+
+        if (!compatBox) return;
+
+        const cpuVal = cpuSelect ? cpuSelect.value : '';
+        const mbVal = mbSelect ? mbSelect.value : '';
+        const gpuVal = gpuSelect ? gpuSelect.value : '';
+        const psuVal = psuSelect ? psuSelect.value : '';
+
+        let estWatts = 100; // Base motherboard/system draw
+        if (cpuVal && builderWattageMap[cpuVal]) estWatts += builderWattageMap[cpuVal];
+        if (gpuVal && builderWattageMap[gpuVal]) estWatts += builderWattageMap[gpuVal];
+
+        compatBox.classList.remove('hidden');
+        if (wattsEl) wattsEl.textContent = estWatts + ' واط (W)';
+
+        // Compatibility check
+        let isCompatible = true;
+        let warningText = '';
+
+        if (cpuVal && mbVal) {
+            const isIntelCpu = cpuVal.toLowerCase().includes('intel');
+            const isAmdCpu = cpuVal.toLowerCase().includes('amd') || cpuVal.toLowerCase().includes('ryzen');
+            const isIntelMb = mbVal.toLowerCase().includes('lga') || mbVal.toLowerCase().includes('b760') || mbVal.toLowerCase().includes('z790');
+            const isAmdMb = mbVal.toLowerCase().includes('am5') || mbVal.toLowerCase().includes('b650') || mbVal.toLowerCase().includes('x670');
+
+            if (isIntelCpu && isAmdMb) {
+                isCompatible = false;
+                warningText = '⚠️ تنبيه: المعالج Intel غير متوافق مع لوحة الأم AMD (AM5)';
+            } else if (isAmdCpu && isIntelMb) {
+                isCompatible = false;
+                warningText = '⚠️ تنبيه: المعالج AMD غير متوافق مع لوحة الأم Intel (LGA1700)';
+            }
+        }
+
+        if (compatStatus) {
+            if (isCompatible) {
+                compatStatus.className = 'font-bold text-emerald-400 flex items-center gap-1';
+                compatStatus.innerHTML = '<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> متوافق 100%';
+            } else {
+                compatStatus.className = 'font-bold text-red-400 flex items-center gap-1';
+                compatStatus.innerHTML = '<i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> غير متوافق';
+            }
+        }
+
+        if (compatMsg) compatMsg.textContent = warningText;
+
+        // PSU Wattage recommendation check
+        if (psuStatus) {
+            let psuWatt = 0;
+            if (psuVal.includes('650W')) psuWatt = 650;
+            else if (psuVal.includes('750W')) psuWatt = 750;
+            else if (psuVal.includes('1000W')) psuWatt = 1000;
+
+            if (psuWatt === 0) {
+                psuStatus.className = 'font-bold text-[#8A9AAD]';
+                psuStatus.textContent = 'لم يتم الاختيار';
+            } else if (psuWatt >= estWatts + 100) {
+                psuStatus.className = 'font-bold text-emerald-400';
+                psuStatus.textContent = 'كافٍ وممتاز (' + psuWatt + 'W)';
+            } else {
+                psuStatus.className = 'font-bold text-red-400';
+                psuStatus.textContent = 'ضعيف للتجميعة (' + psuWatt + 'W)';
+            }
+        }
+        if (window.lucide) lucide.createIcons();
+    }
+
+    document.querySelectorAll('.builder-select').forEach(sel => {
+        sel.addEventListener('change', updateBuilderCompatibilityAndWattage);
+    });
+
+    // PDF Export for PC Builder
+    const exportPdfBtn = document.getElementById('builder-export-pdf');
+    if (exportPdfBtn) {
+        exportPdfBtn.addEventListener('click', () => {
+            const summaryList = document.getElementById('builder-summary-list');
+            const totalPrice = document.getElementById('builder-total-price');
+            const wattsText = document.getElementById('builder-total-watts');
+
+            if (!summaryList || summaryList.children.length === 0) {
+                alert('⚠️ يرجى اختيار قطع التجميعة أولاً قبل التصدير!');
+                return;
+            }
+
+            const printWin = window.open('', '_blank');
+            printWin.document.write(`
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>MESORA — فاتورة مواصفات التجميعة</title>
+                    <style>
+                        body { font-family: 'Cairo', sans-serif; padding: 40px; background: #fff; color: #111; }
+                        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00E5FF; padding-bottom: 20px; margin-bottom: 30px; }
+                        .brand { font-size: 24px; font-weight: bold; color: #0a0f14; }
+                        h2 { text-align: center; color: #00A3C4; margin-bottom: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: right; font-size: 14px; }
+                        th { background: #f4f6f8; color: #333; }
+                        .total { text-align: left; font-size: 20px; font-weight: bold; color: #C5A059; }
+                        .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #777; border-top: 1px solid #eee; padding-top: 15px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="brand">MESORA TECH STORE</div>
+                        <div>التاريخ: ${new Date().toLocaleDateString('ar-IQ')}</div>
+                    </div>
+                    <h2>مواصفات تجميعة الكمبيوتر الاحترافية</h2>
+                    <table>
+                        <thead>
+                            <tr><th>المكون</th><th>القطعة المختارة</th></tr>
+                        </thead>
+                        <tbody>
+                            ${Array.from(summaryList.children).map(child => `<tr><td>${child.innerText}</td></tr>`).join('')}
+                        </tbody>
+                    </table>
+                    <div class="total">المجموع الإجمالي: ${totalPrice ? totalPrice.innerText : '0 د.ع'}</div>
+                    <div style="margin-top: 10px; font-size: 14px; color: #555;">استهلاك الطاقة المقدر: ${wattsText ? wattsText.innerText : '0W'}</div>
+                    <div class="footer">متجر ميسورا للتقنية — كربلاء، العراق | هاتف: 07866554424 | www.mesora.iq</div>
+                    <script>window.onload = function() { window.print(); };<\/script>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+        });
+    }
+
+    // ==========================================================================
+    // 3. Product Comparison Drawer & Modal System
+    // ==========================================================================
+    let compareList = [];
+    const compareDrawer = document.getElementById('compare-drawer');
+    const compareCount = document.getElementById('compare-count');
+    const compareModal = document.getElementById('compare-modal');
+    const openCompareBtn = document.getElementById('open-compare-modal-btn');
+    const closeCompareBtn = document.getElementById('close-compare-modal-btn');
+    const clearCompareBtn = document.getElementById('clear-compare-btn');
+    const compareWrap = document.getElementById('compare-table-wrap');
+
+    window.addToCompare = function(name, price, category, condition) {
+        if (compareList.some(item => item.name === name)) {
+            alert('المنتج مضاف بالفعل لقائمة المقارنة');
+            return;
+        }
+        if (compareList.length >= 3) {
+            alert('يمكن مقارنة 3 منتجات كحد أقصى في نفس الوقت');
+            return;
+        }
+        compareList.push({ name, price, category, condition });
+        updateCompareUI();
+    };
+
+    function updateCompareUI() {
+        if (!compareDrawer || !compareCount) return;
+        compareCount.textContent = compareList.length;
+        if (compareList.length > 0) {
+            compareDrawer.classList.remove('hidden');
+        } else {
+            compareDrawer.classList.add('hidden');
+        }
+    }
+
+    if (clearCompareBtn) {
+        clearCompareBtn.addEventListener('click', () => {
+            compareList = [];
+            updateCompareUI();
+            if (compareModal) compareModal.classList.add('hidden');
+        });
+    }
+
+    if (openCompareBtn && compareModal && compareWrap) {
+        openCompareBtn.addEventListener('click', () => {
+            compareModal.classList.remove('hidden');
+            if (compareList.length === 0) {
+                compareWrap.innerHTML = '<p class="text-center text-[#8A9AAD] py-8 text-xs">لا توجد منتجات بالمقارنة حالياً</p>';
+                return;
+            }
+            compareWrap.innerHTML = `
+                <table class="w-full text-right text-xs text-white border-collapse">
+                    <thead>
+                        <tr class="border-b border-white/10 text-[#00E5FF]">
+                            <th class="p-3">اسم المنتج</th>
+                            <th class="p-3">السعر</th>
+                            <th class="p-3">الفئة</th>
+                            <th class="p-3">الحالة</th>
+                            <th class="p-3">الضمان</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${compareList.map(item => `
+                            <tr class="border-b border-white/5 hover:bg-white/5">
+                                <td class="p-3 font-bold">${item.name}</td>
+                                <td class="p-3 text-[#C5A059] font-bold font-mono">${Number(item.price).toLocaleString('ar-IQ')} د.ع</td>
+                                <td class="p-3">${item.category || 'عام'}</td>
+                                <td class="p-3">${item.condition === 'used' ? '♻️ مستعمل' : '✨ جديد'}</td>
+                                <td class="p-3 text-emerald-400">ضمان حقيقي</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        });
+    }
+
+    if (closeCompareBtn && compareModal) {
+        closeCompareBtn.addEventListener('click', () => {
+            compareModal.classList.add('hidden');
+        });
+    }
+
+    // ==========================================================================
+    // 4. Mobile Bottom Nav Scroll Active Highlighting & Cart Sync
+    // ==========================================================================
+    const mobileNavLinks = document.querySelectorAll('.mobile-bottom-item');
+    window.addEventListener('scroll', () => {
+        let currentSection = '';
+        const sections = document.querySelectorAll('section[id]');
+        sections.forEach(sec => {
+            const top = sec.offsetTop - 120;
+            if (window.scrollY >= top) {
+                currentSection = sec.getAttribute('id');
+            }
+        });
+        mobileNavLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                link.classList.toggle('active', href.substring(1) === currentSection);
+            }
+        });
+    });
 });
+

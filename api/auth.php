@@ -17,6 +17,15 @@ switch ($action) {
     case 'login':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_error('طريقة غير مسموحة', 405);
 
+        // Brute-force protection check
+        $attempts = $_SESSION['login_attempts'] ?? 0;
+        $lastAttempt = $_SESSION['last_attempt_time'] ?? 0;
+
+        if ($attempts >= 5 && (time() - $lastAttempt) < 300) {
+            $remMinutes = ceil((300 - (time() - $lastAttempt)) / 60);
+            json_error("تم حظر محاولات الدخول المؤقت لكثرة المحاولات الخاطئة. يرجى المحاولة بعد {$remMinutes} دقائق.", 429);
+        }
+
         $body = request_body();
         $username = trim($body['username'] ?? '');
         $password = $body['password'] ?? '';
@@ -28,8 +37,14 @@ switch ($action) {
         $user = $stmt->fetch();
 
         if (!$user || !password_verify($password, $user['password_hash'])) {
+            $_SESSION['login_attempts'] = $attempts + 1;
+            $_SESSION['last_attempt_time'] = time();
             json_error('اسم المستخدم أو كلمة المرور غير صحيحة', 401);
         }
+
+        // نجاح الدخول - إعادة تعيين المحاولات
+        $_SESSION['login_attempts'] = 0;
+        $_SESSION['last_attempt_time'] = 0;
 
         // تحديث آخر دخول
         db()->prepare("UPDATE users SET last_login_at = NOW() WHERE id = ?")->execute([$user['id']]);

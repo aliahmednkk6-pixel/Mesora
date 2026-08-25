@@ -4957,5 +4957,205 @@ a.mesora-btn-secondary {
     transform: scale(0.96);
 }
 
+/* ==========================================================================
+   Mobile Floating Bottom Navigation Bar
+   ========================================================================== */
+.mesora-mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(13, 21, 30, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(0, 163, 196, 0.3);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 190;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
 
+.mobile-bottom-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #8A9AAD;
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 700;
+    gap: 3px;
+    position: relative;
+    padding: 6px 10px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
 
+.mobile-bottom-item svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.mobile-bottom-item.active,
+.mobile-bottom-item:hover {
+    color: #00E5FF;
+    background: rgba(0, 163, 196, 0.1);
+}
+
+.mobile-bottom-item.active svg,
+.mobile-bottom-item:hover svg {
+    transform: translateY(-2px);
+    color: #00E5FF;
+}
+
+.mobile-bottom-badge {
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    background: #C5A059;
+    color: #0a0f14;
+    font-size: 9px;
+    font-weight: 900;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 8px rgba(197, 160, 89, 0.6);
+}
+
+@media (min-width: 769px) {
+    .mesora-mobile-bottom-nav {
+        display: none !important;
+    }
+}
+
+/* Padding offset for body on mobile so content isn't covered by bottom bar */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 70px !important;
+    }
+}
+
+/* ==========================================================================
+   Flash Sale & Countdown Timer Section
+   ========================================================================== */
+.flash-deal-banner {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(13, 21, 30, 0.95) 50%, rgba(0, 229, 255, 0.15) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+.timer-box {
+    background: rgba(10, 15, 20, 0.8);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    border-radius: 10px;
+    min-width: 46px;
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.timer-box .timer-num {
+    font-family: var(--font-brand, monospace);
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #EF4444;
+}
+
+.timer-box .timer-label {
+    font-size: 9px;
+    color: #8A9AAD;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Product Comparison Drawer & Modal
+   ========================================================================== */
+.compare-drawer {
+    position: fixed;
+    bottom: 74px;
+    right: 20px;
+    z-index: 180;
+    background: #0d151e;
+    border: 1px solid rgba(0, 163, 196, 0.4);
+    border-radius: 16px;
+    padding: 10px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+@media (min-width: 769px) {
+    .compare-drawer {
+        bottom: 20px;
+    }
+}
+
+.compare-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 11, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.compare-modal-content {
+    background: #0d151e;
+    border: 1px solid rgba(0, 163, 196, 0.4);
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    padding: 24px;
+}
+
+/* ==========================================================================
+   PC Builder Wattage Calculator & Compatibility Badges
+   ========================================================================== */
+.builder-wattage-card {
+    background: rgba(17, 25, 34, 0.9);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.compat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.compat-badge--ok {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.compat-badge--warn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}

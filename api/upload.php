@@ -28,11 +28,40 @@ if (!isset($allowed[$mime])) json_error('صيغة غير مدعومة — الم
 // إنشاء مجلد الرفع
 if (!is_dir(UPLOAD_DIR)) mkdir(UPLOAD_DIR, 0755, true);
 
-// اسم آمن وعشوائي
-$name = 'prod_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4)) . '.' . $allowed[$mime];
-$dest = UPLOAD_DIR . $name;
+// اسم آمن وعشوائي بصيغة WebP
+$baseName = 'prod_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4));
+$webpName = $baseName . '.webp';
+$destWebp = UPLOAD_DIR . $webpName;
 
-if (!move_uploaded_file($file['tmp_name'], $dest)) json_error('فشل حفظ الصورة', 500);
+$converted = false;
+
+// محاولة التحويل إلى WebP باستخدام GD Library
+if (function_exists('imagewebp')) {
+    $img = null;
+    if ($mime === 'image/jpeg') $img = @imagecreatefromjpeg($file['tmp_name']);
+    elseif ($mime === 'image/png') {
+        $img = @imagecreatefrompng($file['tmp_name']);
+        if ($img) {
+            imagealphablending($img, true);
+            imagesavealpha($img, true);
+        }
+    }
+    elseif ($mime === 'image/webp') $img = @imagecreatefromwebp($file['tmp_name']);
+
+    if ($img) {
+        if (@imagewebp($img, $destWebp, 85)) {
+            $converted = true;
+            $name = $webpName;
+        }
+        imagedestroy($img);
+    }
+}
+
+if (!$converted) {
+    $name = $baseName . '.' . $allowed[$mime];
+    $dest = UPLOAD_DIR . $name;
+    if (!move_uploaded_file($file['tmp_name'], $dest)) json_error('فشل حفظ الصورة', 500);
+}
 
 log_activity('image.uploaded', 'product', null, ['file' => $name]);
-json_success(['path' => 'picture/uploads/' . $name], 'تم رفع الصورة بنجاح');
+json_success(['path' => 'picture/uploads/' . $name], 'تم رفع وتطوير الصورة بنجاح');

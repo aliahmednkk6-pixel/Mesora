@@ -652,6 +652,40 @@
             </div>
         </section>
 
+        <!-- Flash Sales & Daily Deals Section -->
+        <section id="flash-deals" class="container mx-auto px-6 mb-12">
+            <div class="flash-deal-banner p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4 text-center md:text-right">
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/20 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0 animate-pulse">
+                        <i data-lucide="zap" class="w-8 h-8"></i>
+                    </div>
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-extrabold border border-red-500/30 uppercase tracking-wide">عروض خاطفة - FLASH SALE</span>
+                        <h3 class="text-xl md:text-2xl font-black text-white mt-1">تخفيضات اليوم على قطع الكمبيوتر</h3>
+                        <p class="text-xs text-[#8A9AAD]">احصل على أسعار استثنائية لفترة محدودة جداً</p>
+                    </div>
+                </div>
+
+                <!-- Live Countdown Timer -->
+                <div class="flex items-center gap-2" id="flash-countdown-timer">
+                    <div class="timer-box">
+                        <div class="timer-num" id="timer-hours">08</div>
+                        <div class="timer-label">ساعة</div>
+                    </div>
+                    <span class="text-red-400 font-bold text-lg">:</span>
+                    <div class="timer-box">
+                        <div class="timer-num" id="timer-minutes">45</div>
+                        <div class="timer-label">دقيقة</div>
+                    </div>
+                    <span class="text-red-400 font-bold text-lg">:</span>
+                    <div class="timer-box">
+                        <div class="timer-num" id="timer-seconds">30</div>
+                        <div class="timer-label">ثانية</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Featured Products -->
         <section id="featured" class="mesora-section mesora-section-block relative z-[1] mesora-reveal">
             <div class="container mx-auto px-6">
@@ -681,16 +715,20 @@
                     </div>
                 </div>
 
-                <!-- Price Filter -->
+                <!-- Advanced Filters (Price, Brand, Condition) -->
                 <div class="flex flex-wrap items-center justify-center gap-2.5 max-w-6xl mx-auto mb-8">
                     <span class="text-xs font-bold text-[#8A9AAD] flex items-center gap-1.5">
                         <i data-lucide="filter" class="w-3.5 h-3.5 text-[#00E5FF]"></i>
-                        فلتر السعر:
+                        الفلترة:
                     </span>
                     <button type="button" data-price-filter="all" class="mesora-price-filter-btn active px-4 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.35)] text-[#00E5FF] text-xs font-bold hover:border-[#00E5FF] transition-all cursor-pointer">الكل</button>
                     <button type="button" data-price-filter="budget" class="mesora-price-filter-btn px-4 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">أقل من 100k</button>
                     <button type="button" data-price-filter="mid" class="mesora-price-filter-btn px-4 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">100k - 300k</button>
                     <button type="button" data-price-filter="premium" class="mesora-price-filter-btn px-4 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">أكثر من 300k</button>
+
+                    <span class="text-[#8A9AAD] text-xs px-1">|</span>
+                    <button type="button" data-cond-filter="new" class="mesora-cond-filter-btn px-3 py-1.5 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">✨ جديد فقط</button>
+                    <button type="button" data-cond-filter="used" class="mesora-cond-filter-btn px-3 py-1.5 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">♻️ مستعمل</button>
                 </div>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto" id="featured-grid">
@@ -2173,6 +2211,56 @@
             });
     });
     </script>
+    <!-- Floating Mobile Bottom Navigation -->
+    <nav class="mesora-mobile-bottom-nav" id="mobile-bottom-nav">
+        <a href="#home" class="mobile-bottom-item active">
+            <i data-lucide="home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="#categories" class="mobile-bottom-item">
+            <i data-lucide="grid"></i>
+            <span>الفئات</span>
+        </a>
+        <a href="#pc-builder" class="mobile-bottom-item">
+            <i data-lucide="cpu"></i>
+            <span>التجميع</span>
+        </a>
+        <a href="#featured" class="mobile-bottom-item" id="mobile-bottom-cart-btn">
+            <i data-lucide="shopping-cart"></i>
+            <span class="mobile-bottom-badge" id="mobile-cart-badge">0</span>
+            <span>السلة</span>
+        </a>
+        <a href="https://wa.me/9647866554424" target="_blank" rel="noopener noreferrer" class="mobile-bottom-item text-emerald-400">
+            <i data-lucide="message-circle"></i>
+            <span>واتساب</span>
+        </a>
+    </nav>
+
+    <!-- Compare Drawer & Modal -->
+    <div id="compare-drawer" class="compare-drawer hidden">
+        <div class="flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4 text-[#00E5FF]"></i>
+            <span class="text-xs text-white font-bold">مقارنة المنتجات (<span id="compare-count">0</span>)</span>
+        </div>
+        <button type="button" id="open-compare-modal-btn" class="px-3 py-1 rounded-full bg-[#00E5FF] text-[#0a0f14] text-xs font-bold hover:bg-[#00A3C4] transition-all cursor-pointer">عرض المقارنة</button>
+        <button type="button" id="clear-compare-btn" class="text-xs text-[#8A9AAD] hover:text-red-400 p-1 cursor-pointer">مسح</button>
+    </div>
+
+    <div id="compare-modal" class="compare-modal-backdrop hidden">
+        <div class="compare-modal-content relative">
+            <button type="button" id="close-compare-modal-btn" class="absolute top-4 left-4 p-2 text-[#8A9AAD] hover:text-white rounded-full bg-[#111922] cursor-pointer">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i data-lucide="git-compare" class="w-6 h-6 text-[#00E5FF]"></i>
+                مقارنة المواصفات
+            </h3>
+            <div id="compare-table-wrap" class="overflow-x-auto">
+                <p class="text-center text-[#8A9AAD] py-8 text-xs">قم بإضافة منتجات للمقارنة لمشاهدة الفرق بينها...</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Load Tailwind CSS asynchronously to prevent render blocking
         (function() {
@@ -2181,6 +2269,15 @@
             s.defer = true;
             document.head.appendChild(s);
         })();
+
+        // Service Worker Registration for PWA support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(reg) { console.log('PWA ServiceWorker registered'); })
+                    .catch(function(err) { console.log('PWA ServiceWorker registration failed: ', err); });
+            });
+        }
     </script>
 </body>
 
