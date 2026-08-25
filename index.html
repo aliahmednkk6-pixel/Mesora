@@ -132,8 +132,8 @@
             }
         }
     </style>
-    <link rel="preload" href="style.css?v=1.0.7" as="style">
-    <link rel="stylesheet" href="style.css?v=1.0.7">
+    <link rel="preload" href="style.css?v=1.0.8" as="style">
+    <link rel="stylesheet" href="style.css?v=1.0.8">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -148,6 +148,37 @@
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress" class="fixed top-0 left-0 h-0.5 bg-gradient-to-r from-[#00E5FF] to-[#C5A059] z-[200] w-0 transition-all duration-150" aria-hidden="true"></div>
     <a href="#main-content" class="mesora-skip-link">تخطي إلى المحتوى</a>
+
+    <!-- Trust Ticker — شريط الثقة المتحرك -->
+    <div class="mesora-trust-ticker" role="status">
+        <div class="mesora-ticker-track">
+            <div class="mesora-ticker-group">
+                <span class="mesora-ticker-item"><i data-lucide="shield-check"></i> ضمان أصلي 100%</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="truck"></i> توصيل لكامل العراق</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="headset"></i> دعم فني مجاني</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="cpu"></i> تجميع احترافي حسب الطلب</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="badge-percent"></i> أسعار تنافسية</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+            </div>
+            <!-- نسخة مكررة للحلقة اللانهائية السلسة -->
+            <div class="mesora-ticker-group" aria-hidden="true">
+                <span class="mesora-ticker-item"><i data-lucide="shield-check"></i> ضمان أصلي 100%</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="truck"></i> توصيل لكامل العراق</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="headset"></i> دعم فني مجاني</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="cpu"></i> تجميع احترافي حسب الطلب</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+                <span class="mesora-ticker-item"><i data-lucide="badge-percent"></i> أسعار تنافسية</span>
+                <span class="mesora-ticker-dot" aria-hidden="true"></span>
+            </div>
+        </div>
+    </div>
 
     <!-- Header (تحسينات 1,2,3,4,6,8) -->
     <header class="mesora-header py-3 sticky top-0 z-[100] transition-all duration-300" id="main-header">
@@ -1918,7 +1949,7 @@
     <div class="mesora-toast" id="mesora-toast" role="status" aria-live="polite"></div>
 
     <script src="vendor/lucide.min.js" defer></script>
-    <script src="script.js?v=1.0.6" defer></script>
+    <script src="script.js?v=1.0.8" defer></script>
     <script>
     // ===== إتمام الطلب داخل الموقع (يحفظ في قاعدة البيانات) =====
     document.addEventListener('DOMContentLoaded', function () {

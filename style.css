@@ -140,6 +140,118 @@ body {
 }
 
 /* ==========================================================================
+   Trust Ticker — شريط الثقة المتحرك (أعلى الصفحة)
+   ========================================================================== */
+.mesora-trust-ticker {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg,
+        rgba(197, 160, 89, 0.08) 0%,
+        var(--mesora-bg-elevated) 25%,
+        var(--mesora-bg-elevated) 75%,
+        rgba(0, 163, 196, 0.08) 100%);
+    border-bottom: 1px solid var(--border-teal-soft);
+    padding: 9px 0;
+    direction: ltr; /* اتجاه الحركة يسار-يمين ثابت بغض النظر عن RTL */
+}
+
+.mesora-ticker-track {
+    display: flex;
+    width: max-content;
+    animation: mesora-ticker-scroll 28s linear infinite;
+    will-change: transform;
+}
+
+/* إيقاف مؤقت عند مرور الماوس */
+.mesora-trust-ticker:hover .mesora-ticker-track {
+    animation-play-state: paused;
+}
+
+.mesora-ticker-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.mesora-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    padding: 0 22px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--mesora-text-muted);
+    transition: color var(--transition-fast), text-shadow var(--transition-fast);
+}
+
+.mesora-ticker-item svg {
+    width: 15px;
+    height: 15px;
+    color: var(--mesora-gold);
+    flex-shrink: 0;
+}
+
+.mesora-ticker-item:hover {
+    color: var(--accent);
+    text-shadow: 0 0 12px var(--mesora-teal-glow);
+}
+
+.mesora-ticker-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--mesora-gold);
+    opacity: 0.55;
+    box-shadow: 0 0 6px var(--mesora-gold-glow);
+    flex-shrink: 0;
+}
+
+@keyframes mesora-ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 768px) {
+    .mesora-trust-ticker { padding: 7px 0; }
+    .mesora-ticker-item {
+        font-size: 0.72rem;
+        padding: 0 14px;
+        gap: 6px;
+    }
+    .mesora-ticker-item svg { width: 13px; height: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mesora-ticker-track { animation: none; }
+}
+
+/* ==========================================================================
+   Hero Build Video — فيديو التجميعة في الواجهة (يظهر فقط عند توفر الملف)
+   ========================================================================== */
+.hero-build-video {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--border-teal-soft);
+    box-shadow: var(--shadow-lg), var(--shadow-teal);
+    background: var(--mesora-bg-card);
+    animation: hero-video-float 6s ease-in-out infinite;
+}
+
+@keyframes hero-video-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-build-video { animation: none; }
+}
+
+/* ==========================================================================
    MESORA — Ultra-Vibrant Spotlight & Cyber Cursor Engine
    ========================================================================== */
 .mesora-global-glow {

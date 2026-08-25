@@ -11,6 +11,33 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.mesora-reveal').forEach((el) => el.classList.add('is-visible'));
     } catch (e) { /* no-op: ensure visibility never throws */ }
 
+    // ==========================================================================
+    // Hero Build Video — يستبدل الشعار بفيديو التجميعة إذا توفر الملف فقط
+    // ضع ملفك في: picture/pc-build.mp4 (أو غيّر المسار بالأسفل)
+    // ==========================================================================
+    try {
+        const heroWrap = document.querySelector('.hero-3d-wrap');
+        const VIDEO_SRC = 'picture/pc-build.mp4';
+        if (heroWrap && !prefersReducedMotion && !heroWrap.dataset.videoLoaded) {
+            heroWrap.dataset.videoLoaded = '1';
+            fetch(VIDEO_SRC, { method: 'HEAD' })
+                .then((r) => {
+                    if (!r.ok) return; // الملف غير موجود — نبقى على الشعار
+                    const video = document.createElement('video');
+                    video.src = VIDEO_SRC;
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.loop = true;
+                    video.playsInline = true;
+                    video.setAttribute('playsinline', '');
+                    video.setAttribute('aria-label', 'عرض متحرك لتجميعة كمبيوتر');
+                    video.className = 'hero-build-video';
+                    heroWrap.replaceChildren(video);
+                })
+                .catch(() => { /* تجاهل — أبقِ الشعار */ });
+        }
+    } catch (e) { /* no-op */ }
+
     const WHATSAPP_NUMBER = "9647866554424";
     const ACTIVE_COUPONS = {
         "MESORA5": { type: "percent", value: 5, label: "خصم 5% على التجميعة" },
