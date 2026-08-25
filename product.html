@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a0f14">
+    <link rel="icon" type="image/png" href="picture/logo.png">
+    <title>تفاصيل المنتج | متجر ميسورا</title>
+    <meta name="description" id="meta-desc" content="تفاصيل المنتج - متجر ميسورا لقطع الحاسوب">
+    <link rel="stylesheet" href="style.css?v=1.1.0">
+    <script type="application/ld+json" id="product-schema"></script>
+    <style>
+        body { background:#0a0f14; color:#E8ECEF; font-family:'Cairo',sans-serif; margin:0; }
+        .p-wrap { max-width:1000px; margin:0 auto; padding:24px 16px 60px; }
+        .p-back { display:inline-flex; align-items:center; gap:6px; color:#8A9AAD; text-decoration:none;
+                  font-size:.85rem; font-weight:700; padding:8px 14px; border-radius:999px;
+                  background:#111820; border:1px solid rgba(0,163,196,.25); transition:.2s; }
+        .p-back:hover { color:#00E5FF; border-color:#00E5FF; }
+        .p-grid { display:grid; grid-template-columns:1fr; gap:28px; margin-top:22px; }
+        @media(min-width:820px){ .p-grid{ grid-template-columns:1fr 1fr; } }
+        .p-gallery-main { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:18px;
+                          border:1px solid rgba(0,163,196,.3); background:#161f28; }
+        .p-thumbs { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+        .p-thumb { width:64px; height:64px; object-fit:cover; border-radius:10px; cursor:pointer;
+                   border:2px solid transparent; opacity:.7; transition:.2s; background:#161f28; }
+        .p-thumb:hover, .p-thumb.active { border-color:#00E5FF; opacity:1; }
+        .p-badge { display:inline-block; padding:4px 12px; border-radius:999px; font-size:.7rem; font-weight:800; }
+        .p-title { font-size:1.7rem; font-weight:900; line-height:1.35; margin:12px 0 6px; }
+        .p-price { font-size:1.9rem; font-weight:900; color:#C5A059; }
+        .p-old-price { text-decoration:line-through; color:#8A9AAD; font-size:1rem; margin-right:10px; }
+        .p-specs { width:100%; border-collapse:collapse; margin-top:14px; font-size:.85rem; }
+        .p-specs td { padding:10px 12px; border-bottom:1px solid rgba(255,255,255,.07); }
+        .p-specs td:first-child { color:#8A9AAD; font-weight:700; white-space:nowrap; }
+        .p-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px;
+                 padding:13px 26px; border-radius:999px; font-weight:800; font-size:.9rem;
+                 text-decoration:none; cursor:pointer; transition:.25s; border:none; }
+        .p-btn-wa { background:#25D366; color:#0a0f14; }
+        .p-btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(37,211,102,.35); }
+        .p-loading { text-align:center; padding:80px 20px; color:#8A9AAD; }
+    </style>
+</head>
+<body>
+    <div class="p-wrap">
+        <a href="index.html#featured" class="p-back">→ العودة إلى المتجر</a>
+        <div id="p-loading" class="p-loading">جارٍ تحميل المنتج...</div>
+        <div id="p-content" hidden>
+            <div class="p-grid">
+                <div>
+                    <img id="p-img" class="p-gallery-main" alt="" width="600" height="450">
+                    <div class="p-thumbs" id="p-thumbs"></div>
+                </div>
+                <div>
+                    <div id="p-badges" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+                    <h1 class="p-title" id="p-name"></h1>
+                    <p style="color:#8A9AAD; font-size:.9rem;" id="p-brand"></p>
+                    <div style="margin:14px 0;">
+                        <span class="p-price" id="p-price"></span>
+                        <span class="p-old-price" id="p-old-price" hidden></span>
+                    </div>
+                    <p id="p-desc" style="color:#8A9AAD; font-size:.92rem; line-height:1.9;"></p>
+                    <table class="p-specs" id="p-specs-table" hidden>
+                        <tbody id="p-specs-body"></tbody>
+                    </table>
+                    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
+                        <button type="button" class="p-btn p-btn-wa" id="p-order-btn">🛒 اطلب الآن عبر واتساب</button>
+                        <a class="p-btn" href="tel:+9647866554424"
+                           style="background:#111820; color:#E8ECEF; border:1px solid rgba(0,163,196,.3);">📞 اتصل بنا</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/lucide.min.js" defer></script>
+    <script>
+    (function () {
+        var WHATSAPP = '9647866554424';
+        var id = new URLSearchParams(location.search).get('id');
+        var loading = document.getElementById('p-loading');
+        var content = document.getElementById('p-content');
+        if (!id) { loading.textContent = '⚠️ لم يتم تحديد منتج'; return; }
+
+        fetch('api/products.php?id=' + encodeURIComponent(id))
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (!res.success || !res.data) { loading.textContent = '⚠️ المنتج غير موجود'; return; }
+                var p = res.data;
+
+                // العنوان والوصف لمحركات البحث
+                document.title = (p.name_ar || 'منتج') + ' | متجر ميسورا';
+                document.getElementById('meta-desc').setAttribute('content',
+                    String(p.description_ar || p.name_ar || '').slice(0, 150));
+
+                // Schema.org للسيو
+                var price = Number(p.discount_price || p.selling_price) || 0;
+                document.getElementById('product-schema').textContent = JSON.stringify({
+                    '@context': 'https://schema.org', '@type': 'Product',
+                    name: p.name_ar, description: p.description_ar || '', sku: p.sku,
+                    image: p.main_image ? [location.origin + '/' + p.main_image] : undefined,
+                    brand: p.brand_name ? { '@type': 'Brand', name: p.brand_name } : undefined,
+                    offers: { '@type': 'Offer', priceCurrency: 'IQD', price: price,
+                        availability: Number(p.stock_quantity) > 0
+                            ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }
+                });
+
+                // الصور
+                var images = [];
+                if (p.main_image) images.push(p.main_image);
+                (p.images || []).forEach(function (src) {
+                    if (images.indexOf(src) === -1) images.push(src);
+                });
+                if (!images.length) images.push('picture/logo.png');
+
+                var mainImg = document.getElementById('p-img');
+                mainImg.src = images[0];
+                mainImg.alt = p.name_ar || '';
+
+                var thumbs = document.getElementById('p-thumbs');
+                if (images.length > 1) {
+                    thumbs.innerHTML = images.map(function (src, i) {
+                        return '<img src="' + src + '" class="p-thumb' + (i === 0 ? ' active' : '') +
+                               '" data-src="' + src + '" alt="" loading="lazy">';
+                    }).join('');
+                    thumbs.addEventListener('click', function (e) {
+                        var t = e.target.closest('.p-thumb');
+                        if (!t) return;
+                        mainImg.src = t.getAttribute('data-src');
+                        thumbs.querySelectorAll('.p-thumb').forEach(function (x) { x.classList.remove('active'); });
+                        t.classList.add('active');
+                    });
+                }
+
+                // الشارات
+                var badges = '';
+                badges += '<span class="p-badge" style="background:rgba(0,229,255,.12);color:#00E5FF;border:1px solid rgba(0,229,255,.3)">' +
+                          (p.condition_type === 'used' ? '♻️ مستعمل' : '✨ جديد') + '</span>';
+                if (Number(p.warranty_months) > 0) {
+                    badges += '<span class="p-badge" style="background:rgba(197,160,89,.12);color:#C5A059;border:1px solid rgba(197,160,89,.3)">🛡️ ضمان ' +
+                              p.warranty_months + ' شهر</span>';
+                }
+                if (p.category_name) {
+                    badges += '<span class="p-badge" style="background:rgba(255,255,255,.06);color:#8A9AAD;border:1px solid rgba(255,255,255,.1)">' +
+                              p.category_name + '</span>';
+                }
+                if (Number(p.stock_quantity) > 0) {
+                    badges += '<span class="p-badge" style="background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.3)">✅ متوفر (' +
+                              p.stock_quantity + ')</span>';
+                } else {
+                    badges += '<span class="p-badge" style="background:rgba(248,113,113,.12);color:#f87171;border:1px solid rgba(248,113,113,.3)">⛔ نفد المخزون</span>';
+                }
+                document.getElementById('p-badges').innerHTML = badges;
+
+                document.getElementById('p-name').textContent = p.name_ar || '';
+                document.getElementById('p-brand').textContent = p.brand_name ? ('الماركة: ' + p.brand_name) : '';
+
+                var priceEl = document.getElementById('p-price');
+                var oldEl = document.getElementById('p-old-price');
+                if (p.discount_price && Number(p.discount_price) > 0) {
+                    priceEl.textContent = Number(p.discount_price).toLocaleString('en-US') + ' د.ع';
+                    oldEl.hidden = false;
+                    oldEl.textContent = Number(p.selling_price).toLocaleString('en-US') + ' د.ع';
+                } else {
+                    priceEl.textContent = Number(p.selling_price).toLocaleString('en-US') + ' د.ع';
+                }
+
+                document.getElementById('p-desc').textContent = p.description_ar || '';
+
+                // المواصفات
+                if (p.specs && p.specs.length) {
+                    document.getElementById('p-specs-table').hidden = false;
+                    document.getElementById('p-specs-body').innerHTML = p.specs.map(function (s) {
+                        return '<tr><td>' + s.spec_key + '</td><td>' + s.spec_value + '</td></tr>';
+                    }).join('');
+                }
+
+                // زر الطلب عبر واتساب
+                document.getElementById('p-order-btn').addEventListener('click', function () {
+                    var lines = ['مرحباً، أرغب بطلب المنتج التالي:', '🛒 ' + (p.name_ar || ''),
+                                 '💰 السعر: ' + price.toLocaleString('en-US') + ' د.ع',
+                                 location.origin + location.pathname + '?id=' + p.id];
+                    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lines.join('\n')),
+                                '_blank', 'noopener');
+                });
+
+                loading.hidden = true;
+                content.hidden = false;
+            })
+            .catch(function () { loading.textContent = 'تعذر الاتصال بالسيرفر — حاول مجدداً'; });
+    })();
+    </script>
+</body>
+</html>

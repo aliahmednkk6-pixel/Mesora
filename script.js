@@ -2996,6 +2996,87 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // PDF Export for PC Builder
+    // ==========================================================================
+    // PC Builder — حفظ / استعادة / مشاركة التجميعة
+    // ==========================================================================
+    (function initBuilderSaveShare() {
+        const componentsEl = document.getElementById('pc-builder-components');
+        if (!componentsEl) return;
+
+        const getSelects = () => Array.from(componentsEl.querySelectorAll('select'));
+        const getState = () => getSelects().map((s, i) => ({ i: i, v: s.value })).filter(o => o.v);
+        const applyState = (state) => {
+            const selects = getSelects();
+            state.forEach(o => {
+                const s = selects[o.i];
+                if (s && o.v) { s.value = o.v; s.dispatchEvent(new Event('change', { bubbles: true })); }
+            });
+        };
+
+        // استعادة من رابط مشاركة #build=...
+        const restoreFromHash = () => {
+            if (!location.hash.startsWith('#build=')) return;
+            try {
+                const json = decodeURIComponent(escape(atob(location.hash.slice(7))));
+                const state = JSON.parse(json);
+                setTimeout(() => { applyState(state); showToast('✅ تم استعادة التجميعة المشتركة'); }, 400);
+            } catch (e) { /* رابط غير صالح — تجاهل */ }
+        };
+        restoreFromHash();
+
+        // أزرار الحفظ والمشاركة — تُضاف بجانب زر الواتساب
+        const whatsappBtn = document.getElementById('builder-send-whatsapp');
+        if (!whatsappBtn || document.getElementById('builder-save-btn')) return;
+
+        const btnClass = 'flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[rgba(0,163,196,0.12)] border border-[rgba(0,163,196,0.3)] text-[#00E5FF] text-[11px] font-bold hover:bg-[#00A3C4] hover:text-[#0a0f14] transition-all cursor-pointer';
+
+        const saveBtn = document.createElement('button');
+        saveBtn.type = 'button';
+        saveBtn.id = 'builder-save-btn';
+        saveBtn.className = btnClass;
+        saveBtn.innerHTML = '<i data-lucide="save" class="w-3.5 h-3.5"></i> حفظ التجميعة';
+        saveBtn.addEventListener('click', () => {
+            localStorage.setItem('mesora_saved_build', JSON.stringify(getState()));
+            showToast('💾 تم حفظ التجميعة على جهازك');
+        });
+
+        const loadBtn = document.createElement('button');
+        loadBtn.type = 'button';
+        loadBtn.id = 'builder-load-btn';
+        loadBtn.className = btnClass;
+        loadBtn.innerHTML = '<i data-lucide="folder-open" class="w-3.5 h-3.5"></i> استعادة';
+        loadBtn.addEventListener('click', () => {
+            try {
+                const saved = JSON.parse(localStorage.getItem('mesora_saved_build') || 'null');
+                if (!saved) { showToast('⚠️ لا يوجد تجميعة محفوظة'); return; }
+                applyState(saved);
+                showToast('✅ تم استعادة التجميعة المحفوظة');
+            } catch (e) { showToast('⚠️ تعذر الاستعادة'); }
+        });
+
+        const shareBtn = document.createElement('button');
+        shareBtn.type = 'button';
+        shareBtn.id = 'builder-share-btn';
+        shareBtn.className = btnClass;
+        shareBtn.innerHTML = '<i data-lucide="link" class="w-3.5 h-3.5"></i> نسخ رابط التجميعة';
+        shareBtn.addEventListener('click', () => {
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(getState()))));
+            const url = location.origin + location.pathname + '#build=' + encoded;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url)
+                    .then(() => showToast('🔗 تم نسخ الرابط — شاركه مع أصحابك'))
+                    .catch(() => prompt('انسخ الرابط يدوياً:', url));
+            } else {
+                prompt('انسخ الرابط يدوياً:', url);
+            }
+        });
+
+        whatsappBtn.insertAdjacentElement('beforebegin', saveBtn);
+        saveBtn.insertAdjacentElement('afterend', loadBtn);
+        loadBtn.insertAdjacentElement('afterend', shareBtn);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    })();
+
     const exportPdfBtn = document.getElementById('builder-export-pdf');
     if (exportPdfBtn) {
         exportPdfBtn.addEventListener('click', () => {

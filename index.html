@@ -132,8 +132,8 @@
             }
         }
     </style>
-    <link rel="preload" href="style.css?v=1.0.9" as="style">
-    <link rel="stylesheet" href="style.css?v=1.0.9">
+    <link rel="preload" href="style.css?v=1.1.0" as="style">
+    <link rel="stylesheet" href="style.css?v=1.1.0">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -726,6 +726,34 @@
                     <span class="text-[#8A9AAD] text-xs px-1">|</span>
                     <button type="button" data-cond-filter="new" class="mesora-cond-filter-btn px-3 py-1.5 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">✨ جديد فقط</button>
                     <button type="button" data-cond-filter="used" class="mesora-cond-filter-btn px-3 py-1.5 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-[#00E5FF] hover:text-white transition-all cursor-pointer">♻️ مستعمل</button>
+
+                    <span class="text-[#8A9AAD] text-xs px-1">|</span>
+
+                    <!-- بحث فوري -->
+                    <div class="relative">
+                        <i data-lucide="search" class="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-[#00E5FF] pointer-events-none"></i>
+                        <input type="search" id="product-search" placeholder="ابحث باسم المنتج..."
+                            class="w-44 sm:w-52 pl-3 pr-8 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-white text-xs placeholder-[#8A9AAD]/70 focus:border-[#00E5FF] focus:outline-none transition-all"
+                            aria-label="بحث في المنتجات">
+                    </div>
+
+                    <!-- ترتيب -->
+                    <select id="product-sort" aria-label="ترتيب المنتجات"
+                        class="px-3 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-xs font-bold cursor-pointer focus:border-[#00E5FF] focus:outline-none transition-all"
+                        style="color-scheme: dark;">
+                        <option value="default" class="bg-[#0d151e]">ترتيب: الافتراضي</option>
+                        <option value="price-asc" class="bg-[#0d151e]">السعر: الأقل أولاً ↑</option>
+                        <option value="price-desc" class="bg-[#0d151e]">السعر: الأعلى أولاً ↓</option>
+                        <option value="rating" class="bg-[#0d151e]">الأعلى تقييماً ★</option>
+                    </select>
+
+                    <!-- المفضلة -->
+                    <button type="button" id="fav-toggle-btn"
+                        class="relative flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#0d151e] border border-[rgba(0,163,196,0.25)] text-[#8A9AAD] text-xs font-bold hover:border-red-400 hover:text-red-400 transition-all cursor-pointer"
+                        aria-label="عرض المفضلة فقط">
+                        <i data-lucide="heart" class="w-3.5 h-3.5"></i> المفضلة
+                        <span id="fav-count" class="hidden absolute -top-1.5 -left-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-black items-center justify-center">0</span>
+                    </button>
                 </div>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto" id="featured-grid">
@@ -1396,6 +1424,7 @@
                             <div>
                                 <h4>ساعات العمل</h4>
                                 <p>يومياً 10:00 ص — 10:00 م</p>
+                                <p id="shop-status" class="text-xs font-black mt-1" aria-live="polite">جارٍ التحقق...</p>
                             </div>
                         </div>
                         <div class="mesora-social-links">
@@ -1414,6 +1443,15 @@
                                 class="mesora-social-link mesora-social-link--tiktok" aria-label="تيك توك @MESORA.IQ">
                                 <img src="picture/tiktok.svg" alt="" class="mesora-social-icon" width="22" height="22">
                             </a>
+                        </div>
+
+                        <!-- خريطة الموقع -->
+                        <div class="mt-6 rounded-2xl overflow-hidden border border-[rgba(0,163,196,0.25)]">
+                            <iframe
+                                src="https://maps.google.com/maps?q=Karbala%2C%20Iraq&z=12&output=embed"
+                                width="100%" height="200" style="border:0; filter: grayscale(1) invert(0.9) hue-rotate(180deg);"
+                                loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                title="موقع متجر ميسورا على الخريطة" allowfullscreen></iframe>
                         </div>
                     </div>
                     <form class="mesora-contact-form" id="contact-form" novalidate>
@@ -1960,7 +1998,7 @@
     <div class="mesora-toast" id="mesora-toast" role="status" aria-live="polite"></div>
 
     <script src="vendor/lucide.min.js" defer></script>
-    <script src="script.js?v=1.0.8" defer></script>
+    <script src="script.js?v=1.1.0" defer></script>
     <script>
     // ===== إتمام الطلب داخل الموقع (يحفظ في قاعدة البيانات) =====
     document.addEventListener('DOMContentLoaded', function () {
@@ -2137,14 +2175,19 @@
                         card.setAttribute('data-price', price);
                         card.setAttribute('data-stock', inStock ? 'available' : 'out');
                         card.setAttribute('data-condition', used ? 'used' : 'new');
+                        card.setAttribute('data-rating', Number(p.rating_avg) || 0);
                         card.setAttribute('data-id', p.id);
+                        var isFav = false;
+                        try { isFav = (JSON.parse(localStorage.getItem('mesora_favs') || '[]')).indexOf(String(p.id)) !== -1; } catch (e) {}
                         card.innerHTML =
                             '<div class="mesora-product-image">' +
-                                '<img src="' + img + '" alt="' + p.name_ar + '" loading="lazy" decoding="async" width="400" height="300" class="mesora-product-img">' +
+                                '<a href="product.html?id=' + p.id + '" aria-label="' + p.name_ar + '">' +
+                                    '<img src="' + img + '" alt="' + p.name_ar + '" loading="lazy" decoding="async" width="400" height="300" class="mesora-product-img">' +
+                                '</a>' +
                                 '<span class="mesora-product-badge' + (used ? ' mesora-badge-used' : '') + '">' + (used ? 'مستعمل' : 'جديد') + '</span>' +
                             '</div>' +
                             '<div class="mesora-product-body">' +
-                                '<h3>' + p.name_ar + '</h3>' +
+                                '<h3><a href="product.html?id=' + p.id + '" class="mesora-product-link">' + p.name_ar + '</a></h3>' +
                                 '<p>' + (p.description_ar || '') + '</p>' +
                                 '<div class="mesora-product-meta">' +
                                     '<span class="mesora-stock mesora-stock--' + (inStock ? 'available' : 'low') + '">' + (inStock ? 'متوفر' : 'نفد المخزون') + '</span>' +
@@ -2154,6 +2197,7 @@
                                     '</div>' +
                                 '</div>' +
                                 '<div class="mesora-product-footer flex items-center gap-2">' +
+                                    '<button type="button" class="mesora-fav-btn' + (isFav ? ' active' : '') + '" data-fav-id="' + p.id + '" title="' + (isFav ? 'إزالة من المفضلة' : 'أضف إلى المفضلة') + '" aria-label="أضف إلى المفضلة"><i data-lucide="heart" class="w-4 h-4"></i></button>' +
                                     '<button type="button" class="mesora-quick-view-btn p-2 rounded-lg bg-[rgba(0,163,196,0.12)] border border-[rgba(0,163,196,0.3)] text-[#00E5FF] hover:bg-[#00A3C4] hover:text-[#0a0f14] transition-all cursor-pointer" title="معاينة سريعة" aria-label="معاينة سريعة"><i data-lucide="eye" class="w-4 h-4"></i></button>' +
                                     '<button type="button" class="mesora-compare-trigger p-2 rounded-lg bg-[rgba(197,160,89,0.12)] border border-[rgba(197,160,89,0.3)] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0a0f14] transition-all cursor-pointer" title="مقارنة المنتج" aria-label="مقارنة المنتج"><i data-lucide="git-compare" class="w-4 h-4"></i></button>' +
                                     '<button type="button" class="mesora-product-btn" data-product="' + p.name_ar + '" aria-label="أضف للسلة"' + (inStock ? '' : ' disabled') + '><i data-lucide="shopping-cart"></i></button>' +
@@ -2166,6 +2210,75 @@
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
 
+                                // ===== بحث فوري + ترتيب + مفضلة =====
+                var allCards = Array.prototype.slice.call(grid.querySelectorAll('article.mesora-product-card'));
+                var searchInput = document.getElementById('product-search');
+                var sortSelect = document.getElementById('product-sort');
+                var favToggleBtn = document.getElementById('fav-toggle-btn');
+                var favCountEl = document.getElementById('fav-count');
+                var favOnly = false;
+
+                function getFavs() {
+                    try { return JSON.parse(localStorage.getItem('mesora_favs') || '[]'); } catch (e) { return []; }
+                }
+                function setFavs(arr) { localStorage.setItem('mesora_favs', JSON.stringify(arr)); }
+                function refreshFavCount() {
+                    if (!favCountEl) return;
+                    var f = getFavs();
+                    favCountEl.textContent = f.length;
+                    favCountEl.classList.toggle('hidden', f.length === 0);
+                    favCountEl.classList.toggle('flex', f.length > 0);
+                }
+
+                function applyProductFilters() {
+                    var q = ((searchInput && searchInput.value) || '').trim().toLowerCase();
+                    var sort = sortSelect ? sortSelect.value : 'default';
+                    var favs = getFavs();
+                    var visible = [];
+                    allCards.forEach(function (card) {
+                        var name = (card.getAttribute('data-name') || '').toLowerCase();
+                        var okSearch = !q || name.indexOf(q) !== -1;
+                        var okFav = !favOnly || favs.indexOf(card.getAttribute('data-id')) !== -1;
+                        var show = okSearch && okFav;
+                        card.style.display = show ? '' : 'none';
+                        if (show) visible.push(card);
+                    });
+                    if (sort !== 'default' && visible.length > 1) {
+                        visible.sort(function (a, b) {
+                            if (sort === 'rating') return (parseFloat(b.dataset.rating) || 0) - (parseFloat(a.dataset.rating) || 0);
+                            return sort === 'price-asc'
+                                ? (parseFloat(a.dataset.price) || 0) - (parseFloat(b.dataset.price) || 0)
+                                : (parseFloat(b.dataset.price) || 0) - (parseFloat(a.dataset.price) || 0);
+                        });
+                        visible.forEach(function (c) { grid.appendChild(c); });
+                    }
+                    refreshFavCount();
+                }
+
+                if (searchInput) searchInput.addEventListener('input', applyProductFilters);
+                if (sortSelect) sortSelect.addEventListener('change', applyProductFilters);
+                if (favToggleBtn) favToggleBtn.addEventListener('click', function () {
+                    favOnly = !favOnly;
+                    this.classList.toggle('active', favOnly);
+                    this.setAttribute('aria-pressed', String(favOnly));
+                    applyProductFilters();
+                });
+
+                grid.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.mesora-fav-btn');
+                    if (!btn) return;
+                    e.preventDefault();
+                    var id = btn.getAttribute('data-fav-id');
+                    var f = getFavs();
+                    var idx = f.indexOf(id);
+                    if (idx > -1) { f.splice(idx, 1); btn.classList.remove('active'); btn.title = 'أضف إلى المفضلة'; }
+                    else { f.push(id); btn.classList.add('active'); btn.title = 'إزالة من المفضلة'; }
+                    setFavs(f);
+                    applyProductFilters();
+                });
+
+                applyProductFilters();
+
                 // ===== التقييمات المعتمدة من قاعدة البيانات =====
                 fetch('api/misc.php?action=reviews_public')
                     .then(function (r) { return r.json(); })
@@ -2173,7 +2286,39 @@
                         if (!res.success || !res.data.length) return;
                         var list = document.getElementById('reviews-list-container');
                         if (!list) return;
-                        var dbReviews = res.data.map(function (rv, i) {
+
+                        // --- ملخّص التقييمات: متوسط + توزيع النجوم ---
+                        var rvs = res.data;
+                        var total = rvs.length;
+                        var sum = 0, dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                        rvs.forEach(function (rv) {
+                            var r = Math.min(5, Math.max(1, Math.round(Number(rv.rating) || 0)));
+                            dist[r]++; sum += r;
+                        });
+                        var avg = (sum / total).toFixed(1);
+                        var summaryHtml =
+                            '<div class="col-span-full flex flex-col sm:flex-row items-center gap-6 p-5 rounded-2xl bg-[#0d151e] border border-[rgba(197,160,89,0.35)] mb-2">' +
+                                '<div class="text-center shrink-0">' +
+                                    '<div class="text-5xl font-black text-[#C5A059] font-cairo">' + avg + '</div>' +
+                                    '<div class="mt-1">' + (function(){var s='';for(var i=1;i<=5;i++)s+='<span class="'+(i<=Math.round(avg)?'text-[#C5A059]':'text-[#3a4250]')+'">★</span>';return s;})() + '</div>' +
+                                    '<div class="text-[11px] text-[#8A9AAD] mt-1">من ' + total + ' تقييم</div>' +
+                                '</div>' +
+                                '<div class="flex-1 w-full space-y-1.5">' +
+                                    [5,4,3,2,1].map(function (star) {
+                                        var pct = total ? Math.round(dist[star] * 100 / total) : 0;
+                                        return '<div class="flex items-center gap-2 text-[11px]">' +
+                                            '<span class="w-8 text-[#8A9AAD]">' + star + ' ★</span>' +
+                                            '<div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">' +
+                                                '<div class="h-full rounded-full bg-gradient-to-l from-[#C5A059] to-[#00E5FF]" style="width:' + pct + '%"></div>' +
+                                            '</div>' +
+                                            '<span class="w-8 text-left text-[#8A9AAD]">' + pct + '%</span>' +
+                                        '</div>';
+                                    }).join('') +
+                                '</div>' +
+                            '</div>';
+                        list.insertAdjacentHTML('afterbegin', summaryHtml);
+
+                        var dbReviews = rvs.map(function (rv, i) {
                             var stars = '';
                             for (var s = 1; s <= 5; s++) stars += '<span class="' + (s <= rv.rating ? 'text-[#C5A059]' : 'text-[#3a4250]') + ' text-[10px]">★</span>';
                             return '<blockquote class="mesora-testimonial bg-[#0d151e] border border-[rgba(197,160,89,0.35)] rounded-xl p-3 shadow-xl relative overflow-hidden">' +
@@ -2281,6 +2426,24 @@
                         window.open('https://wa.me/?text=' + encodeURIComponent(lines.join('\n')), '_blank', 'noopener');
                     });
                 }
+
+                // ===== حالة المتجر الآن (توقيت العراق) =====
+                (function () {
+                    var el = document.getElementById('shop-status');
+                    if (!el) return;
+                    try {
+                        var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Baghdad' }));
+                        var h = now.getHours() + now.getMinutes() / 60;
+                        var open = h >= 10 && h < 22;
+                        if (open) {
+                            el.textContent = '🟢 مفتوح الآن — نستقبل طلباتك';
+                            el.style.color = '#34d399';
+                        } else {
+                            el.textContent = '🔴 مغلق حالياً — يفتح 10:00 ص';
+                            el.style.color = '#f87171';
+                        }
+                    } catch (e) { el.textContent = 'يومياً 10:00 ص — 10:00 م'; }
+                })();
 
                 // ===== أعداد الفئات الحقيقية من قاعدة البيانات + الصور والمعاينة =====
                 var counts = {};
