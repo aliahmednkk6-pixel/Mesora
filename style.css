@@ -1,29 +1,63 @@
 /* ==========================================================================
    MESORA — Mesopotamian-Tech Visual Identity
+   نظام الهوية البصرية الموحّد — كل قيم التصميم تُدار من هنا فقط
    ========================================================================== */
 :root {
+    /* ===== الخلفيات (سلّم العمق) ===== */
     --mesora-bg: #0a0f14;
     --mesora-bg-elevated: #111820;
     --mesora-bg-card: #161f28;
     --mesora-bg-card-hover: #1c2733;
-    --mesora-gold: #C5A059;
+
+    /* ===== الألوان الأساسية ===== */
+    --mesora-gold: #C5A059;          /* الفخامة: الأسعار والتقييمات فقط */
     --mesora-gold-light: #d4b36a;
     --mesora-gold-dark: #9a7d3f;
-    --mesora-teal: #00A3C4;
+    --mesora-teal: #00A3C4;          /* اللون الأساسي */
     --mesora-teal-light: #33b8d4;
+    --accent: #00E5FF;               /* النيون: التفاعل والتوهج فقط */
+
+    /* ===== توهجات ===== */
     --mesora-teal-glow: rgba(0, 163, 196, 0.35);
     --mesora-gold-glow: rgba(197, 160, 89, 0.35);
+
+    /* ===== النصوص ===== */
     --mesora-text: #E8ECEF;
     --mesora-text-muted: #8A9AAD;
+
+    /* ===== الحدود (سلّم موحّد) ===== */
     --mesora-border: rgba(197, 160, 89, 0.22);
     --mesora-border-strong: rgba(197, 160, 89, 0.45);
+    --border-teal-faint: rgba(0, 163, 196, 0.12);
+    --border-teal-soft: rgba(0, 163, 196, 0.25);
+    --border-teal: rgba(0, 163, 196, 0.40);
+
+    /* ===== الزوايا (سلّم موحّد — لا تستخدم قيماً خارج هذه) ===== */
+    --radius-sm: 10px;               /* عناصر صغيرة: شارات، حقول إدخال */
+    --mesora-radius: 14px;           /* البطاقات والأزرار */
+    --mesora-radius-lg: 18px;        /* الحاويات والأقسام الكبيرة */
+    --radius-xl: 24px;               /* النوافذ المنبثقة */
+
+    /* ===== الظلال الموحّدة ===== */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --shadow-teal: 0 0 24px rgba(0, 163, 196, 0.25);
+    --shadow-gold: 0 0 24px rgba(197, 160, 89, 0.2);
+
+    /* ===== الحركة الموحّدة ===== */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: 0.2s var(--ease-out);
+    --transition-base: 0.3s var(--ease-out);
+
+    /* ===== الخطوط ===== */
     --font-brand: 'Orbitron', sans-serif;
     --font-heading: 'Exo 2', 'Cairo', sans-serif;
     --font-body: 'Cairo', sans-serif;
+
+    /* ===== المسافات ===== */
     --marquee-gap: 3.5rem;
     --mesora-section-y: 5.5rem;
-    --mesora-radius: 14px;
-    --mesora-radius-lg: 20px;
 }
 
 * {
@@ -59,6 +93,50 @@ body::after {
         linear-gradient(90deg, transparent 48%, var(--mesora-teal) 48%, var(--mesora-teal) 52%, transparent 52%),
         linear-gradient(0deg, transparent 48%, var(--mesora-teal) 48%, var(--mesora-teal) 52%, transparent 52%);
     background-size: 20px 20px;
+}
+
+/* ==========================================================================
+   لمسات الهوية العامة الموحّدة
+   ========================================================================== */
+
+/* لون تحديد النص — ذهبي الهوية */
+::selection {
+    background: var(--mesora-gold);
+    color: var(--mesora-bg);
+}
+
+/* شريط التمرير بهوية المتجر */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--mesora-bg);
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--mesora-teal), var(--mesora-gold));
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--mesora-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--mesora-teal-light);
+}
+html {
+    scrollbar-color: var(--mesora-teal) var(--mesora-bg);
+    scrollbar-width: thin;
+}
+
+/* حلقة التركيز الموحّدة للوصولية (لوحة المفاتيح) */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+}
+
+/* تحسين وضوح الخطوط */
+body {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 /* ==========================================================================
@@ -236,7 +314,7 @@ body::after {
     background: var(--mesora-gold);
     color: #0a0f14;
     font-weight: 700;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     text-decoration: none;
     transition: top 0.2s ease;
 }
@@ -325,7 +403,7 @@ body::after {
     color: var(--mesora-text);
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -722,7 +800,7 @@ a.mesora-btn-secondary {
 .hero-trust-icon {
     width: 36px;
     height: 36px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -762,6 +840,7 @@ a.mesora-btn-secondary {
     letter-spacing: 0.22em;
     font-family: var(--font-brand);
     font-size: 12px;
+    text-transform: uppercase;
 }
 
 .mesora-section-title {
@@ -776,6 +855,7 @@ a.mesora-btn-secondary {
     background: linear-gradient(90deg, var(--mesora-gold), var(--mesora-teal));
     margin: 1rem auto 0;
     border-radius: 2px;
+    box-shadow: var(--shadow-gold);
 }
 
 /* ==========================================================================
@@ -864,7 +944,7 @@ a.mesora-btn-secondary {
     aspect-ratio: 4 / 3;
     height: auto;
     max-height: 450px;
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     overflow: hidden;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     background-color: var(--mesora-bg-card);
@@ -892,7 +972,7 @@ a.mesora-btn-secondary {
 .swiper-pagination-bullet-active {
     background: var(--mesora-gold) !important;
     width: 26px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     opacity: 1;
     box-shadow: 0 0 12px var(--mesora-gold-glow);
 }
@@ -904,7 +984,7 @@ a.mesora-btn-secondary {
     display: block;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 18px;
+    border-radius: var(--mesora-radius-lg);
     overflow: hidden;
     text-decoration: none;
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -1113,7 +1193,7 @@ a.mesora-btn-secondary {
     padding: 1.5rem 1rem;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1159,7 +1239,7 @@ a.mesora-btn-secondary {
     padding: 1rem 0.75rem 1.1rem;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     text-decoration: none;
     color: var(--mesora-text);
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -1202,7 +1282,7 @@ a.mesora-btn-secondary {
 .mesora-category-thumb {
     width: 100%;
     aspect-ratio: 1;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     background: var(--mesora-bg-elevated);
     border: 1px solid var(--mesora-border);
     overflow: hidden;
@@ -1234,7 +1314,7 @@ a.mesora-btn-secondary {
 .mesora-category-icon {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     background: rgba(197, 160, 89, 0.1);
     border: 1px solid var(--mesora-border);
     display: flex;
@@ -1368,7 +1448,7 @@ a.mesora-btn-secondary {
     padding: 0.75rem 0.9rem;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--mesora-text);
@@ -1517,7 +1597,7 @@ a.mesora-btn-secondary {
     padding: 1.5rem 1.25rem;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border-strong);
-    border-radius: 18px;
+    border-radius: var(--mesora-radius-lg);
 }
 
 .mesora-guarantee-header {
@@ -1582,7 +1662,7 @@ a.mesora-btn-secondary {
     padding: 2rem 1.25rem;
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     position: relative;
     transition: border-color 0.3s ease;
 }
@@ -1820,7 +1900,7 @@ a.mesora-btn-secondary {
 .mesora-testimonial {
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     padding: 2rem;
     transition: border-color 0.3s ease;
 }
@@ -1875,7 +1955,7 @@ a.mesora-btn-secondary {
 .mesora-faq-item {
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 14px;
+    border-radius: var(--mesora-radius);
     overflow: hidden;
     transition: border-color 0.3s ease;
 }
@@ -1950,7 +2030,7 @@ a.mesora-btn-secondary {
 .mesora-contact-icon {
     width: 44px;
     height: 44px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1998,7 +2078,7 @@ a.mesora-btn-secondary {
 .mesora-social-link {
     width: 42px;
     height: 42px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     border: 1px solid transparent;
     display: flex;
     align-items: center;
@@ -2057,7 +2137,7 @@ a.mesora-btn-secondary {
 .mesora-contact-form {
     background: var(--mesora-bg-card);
     border: 1px solid var(--mesora-border);
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     padding: 2rem;
 }
 
@@ -2090,7 +2170,7 @@ a.mesora-btn-secondary {
     width: 100%;
     background: var(--mesora-bg);
     border: 1px solid var(--mesora-border);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     padding: 0.75rem 1rem;
     color: var(--mesora-text);
     font-family: var(--font-body);
@@ -2149,7 +2229,7 @@ a.mesora-btn-secondary {
     border: 1px solid var(--mesora-border-strong);
     color: var(--mesora-text);
     padding: 0.85rem 1.25rem;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     font-size: 0.9rem;
     font-weight: 600;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
@@ -2299,7 +2379,7 @@ a.mesora-btn-secondary {
 .mesora-footer-contact-icon {
     width: 28px;
     height: 28px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2512,7 +2592,7 @@ a.mesora-btn-secondary {
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     border: 1.5px solid rgba(0, 163, 196, 0.4);
     background: rgba(0, 163, 196, 0.08);
     transition: all 0.25s ease;
@@ -2696,7 +2776,7 @@ a.mesora-btn-secondary {
 /* Glassmorphism Cards for Dashboard */
 .cyber-dash-card {
     position: relative;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     height: 255px;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
     cursor: pointer;
@@ -2822,7 +2902,7 @@ a.mesora-btn-secondary {
 .cyber-icon-box {
     width: 32px;
     height: 32px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
@@ -2868,7 +2948,7 @@ a.mesora-btn-secondary {
     content: '';
     position: absolute;
     inset: -1px;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     padding: 1.5px;
     background: linear-gradient(
         135deg,
@@ -2925,7 +3005,7 @@ a.mesora-btn-secondary {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     background: radial-gradient(
         circle at 50% 50%,
         var(--card-glow, rgba(0, 229, 255, 0.15)) 0%,
@@ -3153,7 +3233,7 @@ a.mesora-btn-secondary {
 /* Category Cards */
 .glass-cat-card {
     position: relative;
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     background: rgba(13, 20, 29, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(16px);
@@ -3211,7 +3291,7 @@ a.mesora-btn-secondary {
 .glass-cat-icon {
     width: 52px;
     height: 52px;
-    border-radius: 14px;
+    border-radius: var(--mesora-radius);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
@@ -3690,7 +3770,7 @@ a.mesora-btn-secondary {
     justify-content: center;
     width: 64px;
     height: 64px;
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     background: rgba(245, 158, 11, 0.15);
     border: 1px solid rgba(245, 158, 11, 0.4);
     animation: livepc-core-icon-pulse 3s ease-in-out infinite;
@@ -3719,7 +3799,7 @@ a.mesora-btn-secondary {
 /* Component Cards */
 .livepc-card {
     position: relative;
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     background: rgba(13, 20, 29, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
@@ -3770,7 +3850,7 @@ a.mesora-btn-secondary {
 .livepc-icon-box {
     width: 42px;
     height: 42px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: var(--livepc-color, #00E5FF);
@@ -3796,7 +3876,7 @@ a.mesora-btn-secondary {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 3px 8px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     transition: opacity 0.3s ease;
 }
 
@@ -3849,7 +3929,7 @@ a.mesora-btn-secondary {
     justify-content: space-between;
     gap: 6px;
     padding: 7px 12px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--livepc-color, #00E5FF);
@@ -4192,7 +4272,7 @@ a.mesora-btn-secondary {
     justify-content: center;
     width: 60px;
     height: 60px;
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     background: rgba(0, 229, 255, 0.12);
     border: 1px solid rgba(0, 229, 255, 0.3);
     margin: 0 auto;
@@ -4348,7 +4428,7 @@ a.mesora-btn-secondary {
 .satellite-icon-box {
     width: 46px;
     height: 46px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: var(--satellite-color, #00E5FF);
@@ -4488,7 +4568,7 @@ a.mesora-btn-secondary {
 
 /* Make the inner cards compact - override default glass-cat-card sizing */
 .glass-category-grid .glass-cat-card {
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     background: rgba(13, 20, 29, 0.55);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -4519,7 +4599,7 @@ a.mesora-btn-secondary {
 .glass-category-grid .glass-cat-icon {
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .glass-category-grid .glass-cat-icon svg,
@@ -4566,7 +4646,7 @@ a.mesora-btn-secondary {
     .glass-category-grid .glass-cat-icon {
         width: 32px;
         height: 32px;
-        border-radius: 8px;
+        border-radius: var(--radius-sm);
     }
     .glass-category-grid .glass-cat-icon svg,
     .glass-category-grid .glass-cat-icon i {
@@ -4650,7 +4730,7 @@ a.mesora-btn-secondary {
     gap: 2px;
     flex: 1;
     padding: 0.5rem 0.25rem;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     text-decoration: none;
     color: var(--mesora-text-muted);
     transition: color 0.25s ease, background 0.25s ease;
@@ -4796,7 +4876,7 @@ a.mesora-btn-secondary {
 .moon-1 .moon-body { border-radius: 50%; } /* Circle */
 .moon-2 .moon-body { border-radius: 4px; } /* Square */
 .moon-3 .moon-body { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; } /* Egg */
-.moon-4 .moon-body { border-radius: 8px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); } /* Diamond */
+.moon-4 .moon-body { border-radius: var(--radius-sm); clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); } /* Diamond */
 .moon-4 .moon-body > * { }
 .moon-5 .moon-body { border-radius: 50% 0 50% 0; } /* Leaf */
 .moon-6 .moon-body { border-radius: 0 50% 0 50%; transform: rotate(0deg); } /* Alternate Leaf */
@@ -4925,7 +5005,7 @@ a.mesora-btn-secondary {
 
 .sidebar-scroll::-webkit-scrollbar-thumb {
     background: rgba(0, 163, 196, 0.4);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
 }
 
 .preview-container {
@@ -4990,7 +5070,7 @@ a.mesora-btn-secondary {
     gap: 3px;
     position: relative;
     padding: 6px 10px;
-    border-radius: 12px;
+    border-radius: var(--mesora-radius);
     transition: all 0.25s ease;
 }
 
@@ -5048,7 +5128,7 @@ a.mesora-btn-secondary {
 .flash-deal-banner {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(13, 21, 30, 0.95) 50%, rgba(0, 229, 255, 0.15) 100%);
     border: 1px solid rgba(239, 68, 68, 0.4);
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
     overflow: hidden;
     position: relative;
@@ -5057,7 +5137,7 @@ a.mesora-btn-secondary {
 .timer-box {
     background: rgba(10, 15, 20, 0.8);
     border: 1px solid rgba(239, 68, 68, 0.5);
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     min-width: 46px;
     padding: 6px 8px;
     text-align: center;
@@ -5086,7 +5166,7 @@ a.mesora-btn-secondary {
     z-index: 180;
     background: #0d151e;
     border: 1px solid rgba(0, 163, 196, 0.4);
-    border-radius: 16px;
+    border-radius: var(--mesora-radius-lg);
     padding: 10px 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
     display: flex;
@@ -5115,7 +5195,7 @@ a.mesora-btn-secondary {
 .compare-modal-content {
     background: #0d151e;
     border: 1px solid rgba(0, 163, 196, 0.4);
-    border-radius: 20px;
+    border-radius: var(--mesora-radius-lg);
     max-width: 900px;
     width: 100%;
     max-height: 90vh;
@@ -5130,7 +5210,7 @@ a.mesora-btn-secondary {
 .builder-wattage-card {
     background: rgba(17, 25, 34, 0.9);
     border: 1px solid rgba(0, 229, 255, 0.3);
-    border-radius: 14px;
+    border-radius: var(--mesora-radius);
     padding: 14px 18px;
     display: flex;
     align-items: center;
