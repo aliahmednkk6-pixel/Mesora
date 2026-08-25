@@ -3208,5 +3208,39 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // ==========================================================================
+    // 5. Condition Filter Handler (New vs Used)
+    // ==========================================================================
+    document.querySelectorAll('.mesora-cond-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const cond = btn.getAttribute('data-cond-filter');
+            const isAlreadyActive = btn.classList.contains('active');
+            
+            document.querySelectorAll('.mesora-cond-filter-btn').forEach(b => {
+                b.classList.remove('active', 'border-[#00E5FF]', 'text-[#00E5FF]');
+                b.classList.add('text-[#8A9AAD]', 'border-[rgba(0,163,196,0.25)]');
+            });
+
+            let activeCond = null;
+            if (!isAlreadyActive) {
+                btn.classList.add('active', 'border-[#00E5FF]', 'text-[#00E5FF]');
+                btn.classList.remove('text-[#8A9AAD]', 'border-[rgba(0,163,196,0.25)]');
+                activeCond = cond;
+            }
+
+            document.querySelectorAll('#featured-grid article.mesora-product-card').forEach(card => {
+                const badge = card.querySelector('.mesora-product-badge');
+                const isUsed = badge ? badge.textContent.includes('مستعمل') : false;
+                if (!activeCond) {
+                    card.style.display = '';
+                } else if (activeCond === 'used') {
+                    card.style.display = isUsed ? '' : 'none';
+                } else if (activeCond === 'new') {
+                    card.style.display = !isUsed ? '' : 'none';
+                }
+            });
+        });
+    });
 });
 

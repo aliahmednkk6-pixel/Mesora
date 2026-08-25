@@ -331,7 +331,6 @@
             <a href="#categories" class="mesora-nav-link" data-section="categories">الفئات</a>
             <a href="#featured" class="mesora-nav-link" data-section="featured">المنتجات</a>
             <a href="#services" class="mesora-nav-link" data-section="services">خدماتنا</a>
-            <a href="#about" class="mesora-nav-link" data-section="about">من نحن</a>
             <a href="#faq" class="mesora-nav-link" data-section="faq">الأسئلة</a>
             <a href="#contact" class="mesora-nav-link" data-section="contact">اتصل بنا</a>
             <a href="/admin/" class="mesora-nav-link">لوحة التحكم</a>
@@ -388,48 +387,6 @@
                         <div>
                             <p class="hero-trust-label">الضمان</p>
                             <p class="hero-trust-value">ضمان حقيقي 100%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- About -->
-        <section id="about"
-            class="mesora-section mesora-section-block mesora-section--elevated relative z-[2] mesora-reveal">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <div class="mesora-about-grid">
-                    <div class="mesora-about-content mesora-reveal">
-                        <span class="mesora-section-kicker font-bold block mb-2 uppercase">About MESORA</span>
-                        <h2 class="mesora-section-title text-4xl mb-6">جذور مسمارية.. دوائر تقدم</h2>
-                        <p class="mesora-hero-desc leading-relaxed mb-4">
-                            ميسورا متجر عراقي متخصص في قطع الحاسوب والتقنية. نجمع بين أصالة التراث وحداثة التكنولوجيا
-                            لنقدم لك تجربة شراء موثوقة.
-                        </p>
-                        <p class="mesora-hero-desc leading-relaxed mb-8">
-                            سواء كنت تبني جهاز ألعاب، محطة عمل للتصميم، أو تبحث عن قطعة نادرة — فريقنا جاهز لمساعدتك في
-                            كل خطوة.
-                        </p>
-                        <ul class="mesora-about-list">
-                            <li><i data-lucide="check-circle"></i> قطع أصلية 100% مع فحص شامل</li>
-                            <li><i data-lucide="check-circle"></i> أسعار شفافة بدون مفاجآت</li>
-                            <li><i data-lucide="check-circle"></i> دعم فني قبل وبعد البيع</li>
-                            <li><i data-lucide="check-circle"></i> تجميع احترافي حسب الميزانية</li>
-                        </ul>
-                    </div>
-                    <div class="mesora-about-visual mesora-reveal">
-                        <div class="mesora-about-orbit-wrap">
-                            <!-- Soft gradient aura -->
-                            <div class="mesora-about-aura" aria-hidden="true"></div>
-                            <!-- Orbiting ring with light dot -->
-                            <div class="mesora-about-orbit mesora-about-orbit-1" aria-hidden="true">
-                                <span class="mesora-orbit-dot"></span>
-                            </div>
-                            <div class="mesora-about-frame">
-                                <div class="mesora-about-logo-circle">
-<img src="picture/logo.png" alt="شعار ميسورا" width="220" height="220"
-                                        loading="lazy" decoding="async">
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2157,6 +2114,7 @@
                                 '</div>' +
                                 '<div class="mesora-product-footer flex items-center gap-2">' +
                                     '<button type="button" class="mesora-quick-view-btn p-2 rounded-lg bg-[rgba(0,163,196,0.12)] border border-[rgba(0,163,196,0.3)] text-[#00E5FF] hover:bg-[#00A3C4] hover:text-[#0a0f14] transition-all cursor-pointer" title="معاينة سريعة" aria-label="معاينة سريعة"><i data-lucide="eye" class="w-4 h-4"></i></button>' +
+                                    '<button type="button" onclick="addToCompare(\'' + p.name_ar.replace(/'/g, "\\'") + '\', ' + price + ', \'' + (p.category_slug || '') + '\', \'' + (used ? 'used' : 'new') + '\')" class="p-2 rounded-lg bg-[rgba(197,160,89,0.12)] border border-[rgba(197,160,89,0.3)] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0a0f14] transition-all cursor-pointer" title="مقارنة المنتج"><i data-lucide="git-compare" class="w-4 h-4"></i></button>' +
                                     '<button type="button" class="mesora-product-btn" data-product="' + p.name_ar + '" aria-label="أضف للسلة"' + (inStock ? '' : ' disabled') + '><i data-lucide="shopping-cart"></i></button>' +
                                     '<a href="#" class="mesora-order-whatsapp flex-1 justify-center" data-product="' + p.name_ar + '" data-price="' + price + '" data-stock="' + (inStock ? 'available' : 'out') + '" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle" aria-hidden="true"></i> اطلب الآن</a>' +
                                 '</div>' +
