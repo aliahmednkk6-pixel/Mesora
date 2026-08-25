@@ -3,6 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined") {
         lucide.createIcons();
     }
+
+    // Reveal all mesora-reveal sections IMMEDIATELY (runs first, before any other
+    // initialization, so a later runtime error in this bundle can never leave the
+    // page's sections hidden — previously this ran last and could be skipped entirely).
+    try {
+        document.querySelectorAll('.mesora-reveal').forEach((el) => el.classList.add('is-visible'));
+    } catch (e) { /* no-op: ensure visibility never throws */ }
+
     const WHATSAPP_NUMBER = "9647866554424";
     const ACTIVE_COUPONS = {
         "MESORA5": { type: "percent", value: 5, label: "خصم 5% على التجميعة" },
