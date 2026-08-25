@@ -132,8 +132,8 @@
             }
         }
     </style>
-    <link rel="preload" href="style.css?v=1.0.8" as="style">
-    <link rel="stylesheet" href="style.css?v=1.0.8">
+    <link rel="preload" href="style.css?v=1.0.9" as="style">
+    <link rel="stylesheet" href="style.css?v=1.0.9">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -2175,22 +2175,87 @@
                         list.insertAdjacentHTML('afterbegin', dbReviews);
                     });
 
-                // ===== أعداد الفئات الحقيقية من قاعدة البيانات =====
+                // ===== أعداد الفئات الحقيقية من قاعدة البيانات + الصور والمعاينة =====
                 var counts = {};
                 products.forEach(function (p) {
                     var slug = p.category_slug;
                     if (slug) counts[slug] = (counts[slug] || 0) + 1;
                 });
+
+                // خريطة صور الفئات المتوفرة فعلياً في مجلد picture/
+                // لإضافة فئة جديدة: ضع صورتك باسم picture/cat-<slug>.jpg وس تُكتشف تلقائياً
+                var CAT_IMAGES = {
+                    gpu: 'picture/Gpu.optimized.jpg',
+                    mouse: 'picture/mouse.optimized.jpg',
+                    keyboard: 'picture/Keybord.optimized.jpg',
+                    headset: 'picture/headset.optimized.jpg',
+                    cpu: 'picture/intel.png'
+                };
+
                 document.querySelectorAll('.glass-cat-card[data-category]').forEach(function (cardEl) {
                     var slug = cardEl.getAttribute('data-category');
+
+                    // --- الشارة: العدد الحقيقي ---
                     var countEl = cardEl.querySelector('.glass-cat-count');
                     if (countEl) {
                         var n = counts[slug] || 0;
-                        countEl.textContent = n > 0 ? '+' + n : 'قريباً';
+                        countEl.textContent = n > 0 ? '+ ' + n : 'قريباً';
                         countEl.style.opacity = n > 0 ? '1' : '0.5';
+                        countEl.title = n > 0 ? ('يوجد ' + n + ' منتج متوفر في هذه الفئة') : 'قريباً';
                     }
+
+                    // --- شريط التقدم: نسبة حقيقية من إجمالي المنتجات ---
                     var bar = cardEl.querySelector('.glass-cat-progress-bar');
                     if (bar) bar.style.setProperty('--progress', Math.min((counts[slug] || 0) * 20, 100) + '%');
+
+                    // --- صورة الفئة (مع بقاء الأيقونة إذا لم تتوفر صورة) ---
+                    var iconEl = cardEl.querySelector('.glass-cat-icon');
+                    var imgSrc = CAT_IMAGES[slug] || ('picture/cat-' + slug + '.jpg');
+                    if (iconEl && !iconEl.querySelector('img')) {
+                        var catImg = new Image();
+                        catImg.src = imgSrc;
+                        catImg.alt = '';
+                        catImg.loading = 'lazy';
+                        catImg.decoding = 'async';
+                        catImg.className = 'glass-cat-img';
+                        catImg.onload = function () { iconEl.classList.add('has-photo'); };
+                        catImg.onerror = function () { catImg.remove(); }; // أبقِ الأيقونة
+                        iconEl.insertBefore(catImg, iconEl.firstChild);
+                    }
+
+                    // --- معاينة منتج عشوائي من الفئة عند التحويم (حاسوب فقط) ---
+                    cardEl.addEventListener('mouseenter', function () {
+                        var pool = products.filter(function (p) {
+                            return p.category_slug === slug && p.main_image;
+                        });
+                        if (!pool.length) return;
+                        var pick = pool[Math.floor(Math.random() * pool.length)];
+
+                        var prev = document.getElementById('cat-hover-preview');
+                        if (!prev) {
+                            prev = document.createElement('div');
+                            prev.id = 'cat-hover-preview';
+                            prev.className = 'glass-cat-preview';
+                            prev.setAttribute('aria-hidden', 'true');
+                            document.body.appendChild(prev);
+                        }
+                        prev.innerHTML =
+                            '<img src="' + pick.main_image + '" alt="">' +
+                            '<span>' + (pick.name_ar || '') +
+                            '<small>' + Number(pick.selling_price || pick.discount_price || 0).toLocaleString('en-US') + ' د.ع</small></span>';
+
+                        var r = cardEl.getBoundingClientRect();
+                        prev.style.left = Math.max(90, r.left + r.width / 2 + window.scrollX) + 'px';
+                        prev.style.top = (r.top + window.scrollY) + 'px';
+                        // إعادة تشغيل الأنيميشن
+                        prev.classList.remove('show');
+                        void prev.offsetWidth;
+                        prev.classList.add('show');
+                    });
+                    cardEl.addEventListener('mouseleave', function () {
+                        var prev = document.getElementById('cat-hover-preview');
+                        if (prev) prev.classList.remove('show');
+                    });
                 });
             })
             .catch(function () {

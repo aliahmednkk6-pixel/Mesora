@@ -3473,6 +3473,91 @@ a.mesora-btn-secondary {
     margin-top: auto;
 }
 
+/* ==========================================================================
+   Category Photos — صور حقيقية داخل أيقونة الفئة (مع بقاء الأيقونة احتياطاً)
+   ========================================================================== */
+.glass-cat-icon {
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-cat-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.glass-cat-icon.has-photo img {
+    opacity: 1;
+}
+
+/* إخفاء الأيقونة النصية عند توفر صورة حقيقية */
+.glass-cat-icon.has-photo > svg,
+.glass-cat-icon.has-photo > i {
+    display: none;
+}
+
+/* ==========================================================================
+   Category Hover Preview — معاينة منتج عشوائي من الفئة عند التحويم
+   ========================================================================== */
+.glass-cat-preview {
+    position: absolute;
+    z-index: 90;
+    transform: translate(-50%, calc(-100% - 12px)) scale(0.9);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px 8px 8px;
+    background: var(--mesora-bg-elevated);
+    border: 1px solid var(--border-teal-soft);
+    border-radius: var(--mesora-radius);
+    box-shadow: var(--shadow-lg), var(--shadow-teal);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    white-space: nowrap;
+}
+
+.glass-cat-preview.show {
+    opacity: 1;
+    transform: translate(-50%, calc(-100% - 12px)) scale(1);
+}
+
+.glass-cat-preview img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    background: var(--mesora-bg-card);
+    flex-shrink: 0;
+}
+
+.glass-cat-preview span {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--mesora-text);
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.glass-cat-preview small {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--mesora-gold);
+    font-weight: 700;
+}
+
+@media (max-width: 767px), (hover: none) {
+    /* لا معاينة على اللمس */
+    .glass-cat-preview { display: none; }
+}
+
 .glass-cat-count {
     transition: transform 0.3s ease;
 }
