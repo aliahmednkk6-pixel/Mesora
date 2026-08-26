@@ -117,18 +117,39 @@
             border-radius: 50%;
             object-fit: cover;
         }
-        @media (max-width: 768px) {
-            .hero-3d-wrap,
-            .logo-outer-circle,
+                @media (max-width: 768px) {
+            /* إخفاء العناصر الزخرفية والكيرسر والـ3D Effects على الموبايل فقط —
+               الصندوق اللوجو (اللي بيحتوي على الصورة) يبقى ظاهراً */
             .mesora-cursor-cpu,
             .mesora-global-glow,
             #mesora-cursor-cpu,
-            #mesora-global-glow {
+            #mesora-global-glow,
+            .logo-glow-ring,
+            .logo-gradient-border {
                 display: none !important;
                 visibility: hidden !important;
-                height: 0 !important;
                 opacity: 0 !important;
+                pointer-events: none !important;
+                height: 0 !important;
                 overflow: hidden !important;
+            }
+
+                        /* إيقاف التأثيرات 3D على الموبايل لتوفير الأداء، مع إظهار الشعار بوضوح */
+            .hero-3d-wrap {
+                perspective: none !important;
+            }
+            .hero-3d-logo {
+                transform: none !important;
+                transform-style: flat !important;
+                transition: none !important;
+            }
+
+            /* إظهار الشعار والمحتوى النصي فوراً على الموبايل (LCP) قبل تشغيل الـ JS —
+               يمنع رابطة شعار مخفي طويلاً ويُحسّن الاستجابة الأولية */
+            .mesora-reveal {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
             }
         }
     </style>

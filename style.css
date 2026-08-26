@@ -299,14 +299,13 @@ body {
     will-change: transform;
 }
 
-/* إخفاء الشعار ومؤشر المعالج وتأثيراتهما نهائياً على الهواتف */
+/* إخفاء العناصر الزخرفية والكيرسر والـ3D Effects على الموبايل فقط —
+   الشعار والصورة يبقون ظاهرين لأنهما داخل .logo-outer-circle مباشرة */
 @media (max-width: 768px), (pointer: coarse) {
     .mesora-cursor-cpu,
     .mesora-global-glow,
     #mesora-cursor-cpu,
     #mesora-global-glow,
-    .hero-3d-wrap,
-    .logo-outer-circle,
     .logo-glow-ring,
     .logo-gradient-border {
         display: none !important;
@@ -315,6 +314,16 @@ body {
         pointer-events: none !important;
         height: 0 !important;
         overflow: hidden !important;
+    }
+
+    /* إيقاف تأثيرات 3D على الموبايل لتوفير الأداء — الشعار يظهر بوضوح بدون تشويش */
+    .hero-3d-wrap {
+        perspective: none !important;
+    }
+    .hero-3d-logo {
+        transform: none !important;
+        transform-style: flat !important;
+        transition: none !important;
     }
 }
 
@@ -2610,7 +2619,7 @@ a.mesora-btn-secondary {
         font-size: 1.5rem;
     }
 
-    /* Reduce motion workload on smaller devices for smoother rendering */
+        /* Reduce motion workload on smaller devices for smoother rendering */
     .marquee-container,
     .dashed-orbit,
     .hero-circuit-flow,
@@ -2620,7 +2629,8 @@ a.mesora-btn-secondary {
     .mesora-about-aura,
     .mesora-about-conic,
     .mesora-about-orbit,
-    .mesora-orbit-dot {
+    .mesora-orbit-dot,
+    .logo-inner-container {
         animation: none !important;
     }
 }
