@@ -2464,10 +2464,12 @@
                     return isNaN(d.getTime()) ? null : d;
                 };
 
+                                var activeDeals = [];
                 var dealEnd = null;
                 var hasAnyDbEnd = false;
                 products.forEach(function (p) {
                     if (!(p.discount_price && Number(p.discount_price) > 0)) return; // المنتجات المخفّضة فقط
+                    activeDeals.push(p);
                     if (!p.deal_ends_at) { hasAnyDbEnd = true; return; }             // عرض مستمر بلا نهاية
                     hasAnyDbEnd = true;
                     var d = parseDealDate(p.deal_ends_at);
@@ -2477,8 +2479,11 @@
                     }
                 });
 
+                // لا توجد أي منتجات مخفّضة؟ → المؤقّت صفر + رسالة «لا توجد تخفيضات»
+                var noDealsAtAll = activeDeals.length === 0;
+
                 // ضُبط وقت من لوحة التحكم؟ المؤقت مرتبط به حتى لو انتهى (يظهر 00:00)
-                var isDbDeal = hasAnyDbEnd;
+                var isDbDeal = hasAnyDbEnd || noDealsAtAll;
                 if (!isDbDeal) {
                     // لا ضبط إطلاقاً → عرض يومي متجدد تلقائياً
                     var eod = new Date();
@@ -2535,6 +2540,11 @@
                             stockNote.textContent = '✅ متوفر حالياً — بقي ' + minStock + ' قطع';
                             stockNote.style.color = '#34d399';
                         }
+                                                stockNote.classList.remove('hidden');
+                    } else {
+                        // لا توجد أي منتجات مخفّضة → رسالة واضحة بدل صمت القسم
+                        stockNote.textContent = '🛒 لا توجد تخفيضات حالياً — تابعنا قريباً لعروض جديدة';
+                        stockNote.style.color = '#8A9AAD';
                         stockNote.classList.remove('hidden');
                     }
                 }
