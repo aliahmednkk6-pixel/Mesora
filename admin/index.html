@@ -399,6 +399,58 @@
             </div>
         </section>
 
+                <!-- Categories -->
+        <section class="view" id="view-cats">
+            <div class="panel">
+                <div class="panel-header"><h3>🗂️ إدارة الفئات</h3><button class="btn btn-primary btn-sm" onclick="toggleCatForm()">➕ فئة جديدة</button></div>
+                <div id="cat-form" style="display:none; border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <h4 id="cat-form-title" style="padding:1rem 1.25rem 0; font-size:0.9rem; color:var(--teal);">➕ إضافة فئة جديدة</h4>
+                    <input type="hidden" id="cat-edit-id" value="">
+                    <div class="form-grid">
+                        <div class="form-group"><label>الاسم العربي *</label><input type="text" id="cat-name-ar" placeholder="معالجات"></div>
+                        <div class="form-group"><label>الاسم الإنجليزي</label><input type="text" id="cat-name-en" placeholder="Processors"></div>
+                        <div class="form-group"><label>المعرّف slug (اختياري)</label><input type="text" id="cat-slug" placeholder="processors" dir="ltr"></div>
+                        <div class="form-group"><label>أيقونة (إيموجي)</label><input type="text" id="cat-icon" placeholder="🧠"></div>
+                        <div class="form-group"><label>ترتيب العرض</label><input type="number" id="cat-sort" placeholder="0" value="0"></div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="saveCat()">💾 حفظ الفئة</button>
+                        <button class="btn" onclick="toggleCatForm(); resetCatFormMode();">إلغاء</button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>#</th><th>الفئة</th><th>English</th><th>Slug</th><th>المنتجات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+                        <tbody id="cats-tbody"><tr><td colspan="7" style="text-align:center;color:var(--muted)">جارٍ التحميل…</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deals -->
+        <section class="view" id="view-deals">
+            <div class="panel">
+                <div class="panel-header"><h3>🔥 إدارة التخفيضات (عروض Flash)</h3><button class="btn btn-sm" onclick="loadDeals()">🔄 تحديث</button></div>
+                <p style="padding:0.75rem 1.25rem; color:var(--muted); font-size:0.78rem; line-height:1.7;">
+                    💡 اضبط <strong>سعر التخفيض</strong> و<strong>تاريخ الانتهاء</strong> لكل منتج ليظهر في قسم «عروض اليوم» بالموقع مع مؤقّت تنازلي حقيقي.<br>
+                    ⚠️ اترك السعر فارغاً = إلغاء التخفيض. يجب أن يكون سعر التخفيض أقل من السعر الأصلي.
+                </p>
+                <div class="filter-bar">
+                    <input type="text" id="deals-search" placeholder="🔎 ابحث باسم المنتج…" oninput="renderDeals()" style="flex:1; min-width:200px;">
+                    <select id="deals-filter" onchange="renderDeals()">
+                        <option value="all">كل المنتجات</option>
+                        <option value="active">التخفيضات النشطة فقط</option>
+                    </select>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>المنتج</th><th>السعر الأصلي</th><th>سعر التخفيض (د.ع)</th><th>ينتهي في</th><th>الحالة</th><th>إجراء</th></tr></thead>
+                        <tbody id="deals-tbody"><tr><td colspan="6" style="text-align:center;color:var(--muted)">جارٍ التحميل…</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
         <!-- Inventory -->
         <section class="view" id="view-inventory">
             <div class="panel">
@@ -554,9 +606,10 @@
             if (json.success) {
                 errEl.style.display = 'none';
                 document.getElementById('login-overlay').style.display = 'none';
-                document.getElementById('app').style.display = 'flex';
+                                document.getElementById('app').style.display = 'flex';
                 loadDashboard();
                 loadProducts();
+                loadCats(); // تعبئة قائمة الفئات في نموذج المنتجات من قاعدة البيانات
             } else {
                 errEl.textContent = json.error || 'بيانات الدخول غير صحيحة';
                 errEl.style.display = 'block';
@@ -637,10 +690,12 @@
     function refreshCurrentView() {
         const active = document.querySelector('.nav-item.active');
         const view = active ? active.dataset.view : 'dashboard';
-        if (view === 'dashboard') loadDashboard();
+                if (view === 'dashboard') loadDashboard();
         if (view === 'products') loadProducts();
         if (view === 'orders') loadOrders();
         if (view === 'inventory') loadInventory();
+        if (view === 'deals') loadDeals();
+        if (view === 'cats') loadCats();
     }
 
     function statusLabel(s) {
@@ -881,6 +936,231 @@
             </html>
         `);
         printWin.document.close();
+    }
+
+        // ============================================================
+    // ===== إدارة الفئات (categories.php — CRUD كامل) ============
+    // ============================================================
+    let catsCache = [];
+
+    function escHtml(s) {
+        return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    async function loadCats() {
+        const json = await api('categories.php');
+        if (!json.success) { alert('❌ ' + (json.error || 'تعذر تحميل الفئات')); return; }
+        catsCache = json.data;
+        renderCats();
+        fillCategorySelect();
+    }
+
+    function fillCategorySelect() {
+        // تعبئة قائمة الفئات في نموذج المنتجات ديناميكياً من قاعدة البيانات
+        const sel = document.getElementById('pf-category');
+        if (!sel) return;
+        const prev = sel.value;
+        const active = catsCache.filter(c => Number(c.is_active) === 1);
+        if (!active.length) return;
+        sel.innerHTML = active.map(c =>
+            `<option value="${c.id}">${c.icon ? c.icon + ' ' : ''}${escHtml(c.name_ar)}</option>`
+        ).join('');
+        if (prev && active.some(c => String(c.id) === String(prev))) sel.value = prev;
+    }
+
+    function renderCats() {
+        const tbody = document.getElementById('cats-tbody');
+        const fmtN = n => Number(n || 0).toLocaleString('ar-IQ');
+        tbody.innerHTML = catsCache.map(c => `
+            <tr>
+                <td>${c.id}</td>
+                <td><strong>${c.icon ? c.icon + ' ' : ''}${escHtml(c.name_ar)}</strong></td>
+                <td>${escHtml(c.name_en) || '—'}</td>
+                <td dir="ltr">${escHtml(c.slug) || '—'}</td>
+                <td>${fmtN(c.products_count)}</td>
+                <td><span class="tag ${Number(c.is_active) === 1 ? 'tag-green' : 'tag-red'}">${Number(c.is_active) === 1 ? 'نشطة' : 'معطّلة'}</span></td>
+                <td style="white-space:nowrap">
+                    <button class="btn btn-sm" onclick="editCat(${c.id})">✏️</button>
+                    <button class="btn btn-sm" onclick="toggleCatActive(${c.id}, ${Number(c.is_active) === 1 ? 0 : 1})">${Number(c.is_active) === 1 ? '⏸️' : '▶️'}</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCat(${c.id})">🗑️</button>
+                </td>
+            </tr>`).join('')
+            || '<tr><td colspan="7" style="text-align:center;color:var(--muted)">لا توجد فئات — أضف أول فئة ➕</td></tr>';
+    }
+
+    function toggleCatForm() {
+        const f = document.getElementById('cat-form');
+        f.style.display = f.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function resetCatFormMode() {
+        document.getElementById('cat-edit-id').value = '';
+        document.getElementById('cat-form-title').textContent = '➕ إضافة فئة جديدة';
+        ['cat-name-ar', 'cat-name-en', 'cat-slug', 'cat-icon'].forEach(id => document.getElementById(id).value = '');
+        document.getElementById('cat-sort').value = '0';
+    }
+
+    function editCat(id) {
+        const c = catsCache.find(x => Number(x.id) === Number(id));
+        if (!c) return;
+        document.getElementById('cat-edit-id').value = c.id;
+        document.getElementById('cat-name-ar').value = c.name_ar || '';
+        document.getElementById('cat-name-en').value = c.name_en || '';
+        document.getElementById('cat-slug').value = c.slug || '';
+        document.getElementById('cat-icon').value = c.icon || '';
+        document.getElementById('cat-sort').value = c.sort_order ?? 0;
+        document.getElementById('cat-form-title').textContent = '✏️ تعديل الفئة: ' + (c.name_ar || '');
+        document.getElementById('cat-form').style.display = 'block';
+    }
+
+    async function saveCat() {
+        const editId = document.getElementById('cat-edit-id').value;
+        const nameAr = document.getElementById('cat-name-ar').value.trim();
+        if (!nameAr) { alert('⚠️ الاسم العربي مطلوب'); return; }
+
+        const body = {
+            name_ar: nameAr,
+            name_en: document.getElementById('cat-name-en').value.trim(),
+            icon: document.getElementById('cat-icon').value.trim(),
+            sort_order: Number(document.getElementById('cat-sort').value || 0)
+        };
+
+        let json;
+        if (editId) {
+            body.id = Number(editId);
+            json = await api('categories.php', {method: 'PUT', body: JSON.stringify(body)});
+        } else {
+            body.slug = document.getElementById('cat-slug').value.trim();
+            json = await api('categories.php', {method: 'POST', body: JSON.stringify(body)});
+        }
+
+        if (json.success) {
+            alert('✅ ' + json.message);
+            resetCatFormMode();
+            document.getElementById('cat-form').style.display = 'none';
+            loadCats();
+        } else {
+            alert('❌ ' + (json.error || 'فشل حفظ الفئة'));
+        }
+    }
+
+    async function toggleCatActive(id, newState) {
+        const json = await api('categories.php', {method: 'PUT', body: JSON.stringify({id, is_active: newState})});
+        if (json.success) loadCats(); else alert('❌ ' + (json.error || 'فشل التحديث'));
+    }
+
+    async function deleteCat(id) {
+        const c = catsCache.find(x => Number(x.id) === Number(id));
+        const label = c ? `"${c.name_ar}"` : '';
+        const hasProducts = c && Number(c.products_count) > 0;
+        const msg = hasProducts
+            ? `الفئة ${label} تحتوي على منتجات.\nسيتم تعطيلها بدلاً من حذفها — موافق؟`
+            : `هل تريد حذف الفئة ${label} نهائياً؟`;
+        if (!confirm(msg)) return;
+        const json = await api('categories.php?id=' + id, {method: 'DELETE'});
+        if (json.success) {
+            alert('✅ ' + json.message);
+            loadCats();
+        } else alert('❌ ' + (json.error || 'فشل الحذف'));
+    }
+
+        // ============================================================
+    // ===== إدارة التخفيضات (products.php PUT — discount_price + deal_ends_at)
+    // ============================================================
+    let dealsCache = [];
+
+    function isDealActive(p) {
+        if (!p.discount_price || Number(p.discount_price) <= 0) return false;
+        if (!p.deal_ends_at) return true;
+        const d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
+        return isNaN(d.getTime()) || d.getTime() > Date.now();
+    }
+
+    async function loadDeals() {
+        const json = await api('products.php?all=1');
+        if (!json.success) { alert('❌ ' + (json.error || 'تعذر تحميل المنتجات')); return; }
+        dealsCache = json.data;
+        renderDeals();
+    }
+
+    function renderDeals() {
+        const tbody = document.getElementById('deals-tbody');
+        if (!tbody) return;
+        const q = (document.getElementById('deals-search')?.value || '').trim().toLowerCase();
+        const filter = document.getElementById('deals-filter')?.value || 'all';
+        const fmtN = n => Number(n || 0).toLocaleString('ar-IQ');
+
+        let list = dealsCache.slice();
+        if (filter === 'active') list = list.filter(isDealActive);
+        if (q) list = list.filter(p => (p.name_ar || '').toLowerCase().includes(q) || (p.sku || '').toLowerCase().includes(q));
+        // النشطة أولاً ثم بالاسم
+        list.sort((a, b) => (isDealActive(b) - isDealActive(a)) || String(a.name_ar).localeCompare(String(b.name_ar), 'ar'));
+
+        tbody.innerHTML = list.map(p => {
+            const active = isDealActive(p);
+            let endVal = '';
+            if (p.deal_ends_at) {
+                const d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
+                if (!isNaN(d.getTime())) {
+                    const pad = n => String(n).padStart(2, '0');
+                    endVal = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                }
+            }
+            const offPct = (p.discount_price && Number(p.selling_price) > 0)
+                ? Math.round((1 - Number(p.discount_price) / Number(p.selling_price)) * 100) : 0;
+            return `
+            <tr>
+                <td><strong>${escHtml(p.name_ar)}</strong><br><small style="color:var(--muted)" dir="ltr">${escHtml(p.sku)}</small></td>
+                <td>${fmtN(p.selling_price)} د.ع</td>
+                <td><input type="number" id="deal-price-${p.id}" value="${p.discount_price ?? ''}" min="0" step="1000"
+                           placeholder="بدون تخفيض" style="width:130px;"></td>
+                <td><input type="datetime-local" id="deal-end-${p.id}" value="${endVal}" style="width:200px;"></td>
+                <td>${p.discount_price && Number(p.discount_price) > 0
+                        ? `<span class="tag ${active ? 'tag-green' : 'tag-red'}">${active ? '🔥 نشط' : 'منتهي'}</span>`
+                          + (offPct > 0 ? ` <small style="color:var(--amber)">−${offPct}%</small>` : '')
+                        : '<span class="tag tag-gray">—</span>'}</td>
+                <td style="white-space:nowrap">
+                    <button class="btn btn-primary btn-sm" onclick="saveDeal(${p.id}, ${Number(p.selling_price)})">💾 حفظ</button>
+                    ${p.discount_price ? `<button class="btn btn-sm" onclick="clearDeal(${p.id})">إلغاء</button>` : ''}
+                </td>
+            </tr>`;
+        }).join('')
+        || '<tr><td colspan="6" style="text-align:center;color:var(--muted)">لا توجد منتجات مطابقة</td></tr>';
+    }
+
+    async function saveDeal(id, sellingPrice) {
+        const dpRaw = document.getElementById('deal-price-' + id)?.value ?? '';
+        const deRaw = document.getElementById('deal-end-' + id)?.value ?? '';
+
+        if (dpRaw !== '') {
+            const dp = Number(dpRaw);
+            if (isNaN(dp) || dp <= 0) { alert('⚠️ سعر التخفيض يجب أن يكون رقماً أكبر من صفر'); return; }
+            if (sellingPrice && dp >= sellingPrice) {
+                alert(`⚠️ سعر التخفيض (${dp.toLocaleString('ar-IQ')}) يجب أن يكون أقل من السعر الأصلي (${Number(sellingPrice).toLocaleString('ar-IQ')} د.ع)`);
+                return;
+            }
+        } else if (deRaw !== '') {
+            alert('⚠️ لا يمكن ضبط تاريخ انتهاء بدون سعر تخفيض — أدخل السعر أو امسح التاريخ');
+            return;
+        }
+
+        const body = {
+            id: id,
+            discount_price: dpRaw === '' ? null : Number(dpRaw),
+            deal_ends_at: deRaw === '' ? null : deRaw.replace('T', ' ')
+        };
+
+        const json = await api('products.php', {method: 'PUT', body: JSON.stringify(body)});
+        if (json.success) {
+            alert('✅ ' + json.message);
+            loadDeals();
+        } else alert('❌ ' + (json.error || 'فشل حفظ التخفيض'));
+    }
+
+    async function clearDeal(id) {
+        if (!confirm('إلغاء التخفيض على هذا المنتج؟')) return;
+        const json = await api('products.php', {method: 'PUT', body: JSON.stringify({id, discount_price: null, deal_ends_at: null})});
+        if (json.success) loadDeals(); else alert('❌ ' + (json.error || 'فشل الإلغاء'));
     }
 
     // ===== تصدير الطلبات كـ CSV =====
