@@ -2306,7 +2306,11 @@
                                 '</div>' +
                             '</div>';
                         grid.appendChild(card);
-                        if (hasDeal) dealsCards.push(card.cloneNode(true));
+                                                if (hasDeal) {
+                            var dc = card.cloneNode(true);
+                            dc.classList.add('mesora-deal-card');
+                            dealsCards.push(dc);
+                        }
                     });
 
                     // ===== تعبئة شبكة عروض Flash بكل منتج مخفّض نشط =====
