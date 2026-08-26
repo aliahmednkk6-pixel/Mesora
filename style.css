@@ -158,7 +158,9 @@ body {
 .mesora-ticker-track {
     display: flex;
     width: max-content;
-    animation: mesora-ticker-scroll 28s linear infinite;
+    /* 56s مع 4 مجموعات (-50% = عرض مجموعتين) = نفس سرعة 28s القديمة
+       مع تغطية مضاعفة تمنع ظهور فراغ على الشاشات العريضة */
+    animation: mesora-ticker-scroll 56s linear infinite;
     will-change: transform;
 }
 
