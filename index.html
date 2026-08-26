@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="tw-loading">
 
 <head>
     <meta charset="UTF-8">
@@ -111,11 +111,21 @@
             object-fit: contain;
             border-radius: 50%;
         }
-        .mesora-header-logo {
+                .mesora-header-logo {
             width: 48px;
             height: 48px;
             border-radius: 50%;
             object-fit: cover;
+        }
+                /* حماية حرجة: إخفاء النوافذ المنبثقة والأدراج فقط قبل تحميل Tailwind —
+           يمنع وميض نوافذ المقارنة والسلة والدفع فوق الصفحة عند الدخول.
+           الكلاس tw-loading يُزال تلقائياً بمجرد جاهزية Tailwind فيعمل كل شيء طبيعياً */
+        html.tw-loading .hidden,
+        html.tw-loading .opacity-0,
+        html.tw-loading .translate-x-full,
+        html.tw-loading #compare-drawer,
+        html.tw-loading #compare-modal {
+            display: none !important;
         }
                 @media (max-width: 768px) {
             /* إخفاء العناصر الزخرفية والكيرسر والـ3D Effects على الموبايل فقط —
@@ -2625,12 +2635,20 @@
     </div>
 
     <script>
-        // Load Tailwind CSS asynchronously to prevent render blocking
+                // Load Tailwind CSS asynchronously to prevent render blocking
         (function() {
             var s = document.createElement('script');
             s.src = 'https://cdn.tailwindcss.com';
             s.defer = true;
+            // إزالة كلاس tw-loading فور جاهزية Tailwind لتعمل النوافذ والأدراج طبيعياً
+            s.onload = function() {
+                document.documentElement.classList.remove('tw-loading');
+            };
             document.head.appendChild(s);
+            // شبكة أمان: إزالة الكلاس بعد 3 ثوانٍ حتى لو تعذر تحميل Tailwind
+            setTimeout(function() {
+                document.documentElement.classList.remove('tw-loading');
+            }, 3000);
         })();
 
         // Service Worker Registration for PWA support
