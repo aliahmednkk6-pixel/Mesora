@@ -146,15 +146,34 @@
 
             /* إظهار الشعار والمحتوى النصي فوراً على الموبايل (LCP) قبل تشغيل الـ JS —
                يمنع رابطة شعار مخفي طويلاً ويُحسّن الاستجابة الأولية */
-            .mesora-reveal {
+                        .mesora-reveal {
                 opacity: 1 !important;
                 transform: none !important;
                 transition: none !important;
             }
+
+            /* إجبار إظهار الشعار على الموبايل بأولوية أعلى — يتغلب على أي
+               نسخة مخزنة مؤقتاً من style.css (قد تكون ما زالت تحتوي على display:none)
+               باستخدام specificity (0,2,0) + !important مقابل (0,1,0) + !important */
+            .mesora-section--hero .hero-3d-wrap,
+            .mesora-section--hero .logo-outer-circle,
+            .mesora-section--hero .hero-3d-logo {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                height: auto !important;
+            }
+            .mesora-section--hero img.main-logo-circle {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 100% !important;
+                height: auto !important;
+            }
         }
     </style>
-    <link rel="preload" href="style.css?v=1.1.0" as="style">
-    <link rel="stylesheet" href="style.css?v=1.1.0">
+        <link rel="preload" href="style.css?v=1.1.1" as="style">
+    <link rel="stylesheet" href="style.css?v=1.1.1">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">

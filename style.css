@@ -316,7 +316,7 @@ body {
         overflow: hidden !important;
     }
 
-    /* إيقاف تأثيرات 3D على الموبايل لتوفير الأداء — الشعار يظهر بوضوح بدون تشويش */
+        /* إيقاف تأثيرات 3D على الموبايل لتوفير الأداء — الشعار يظهر بوضوح بدون تشويش */
     .hero-3d-wrap {
         perspective: none !important;
     }
@@ -324,6 +324,24 @@ body {
         transform: none !important;
         transform-style: flat !important;
         transition: none !important;
+    }
+
+    /* إجبار إظهار الشعار على الشاشات اللمسية — يمنع أي hide غير مقصود */
+    .mesora-section--hero .hero-3d-wrap,
+    .mesora-section--hero .logo-outer-circle,
+    .mesora-section--hero .hero-3d-logo,
+    .mesora-section--hero .logo-inner-container {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        height: auto !important;
+    }
+    .mesora-section--hero img.main-logo-circle {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 100% !important;
+        height: auto !important;
     }
 }
 
