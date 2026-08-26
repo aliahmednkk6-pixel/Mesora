@@ -2871,35 +2871,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initCustomizer();
 
+        // ==========================================================================
+    // 1. Flash Deals Countdown Timer
+    // ⚠️ تم حذف المؤقت الوهمي القديم هنا (بدأ بـ 08:45:30 الثابتة وكان يتنافس
+    //    مع المؤقت الحقيقي في index.html المرتبط بـ deal_ends_at من قاعدة
+    //    البيانات — تضاربهما كان يجعل الأرقام تبدو عشوائية)
+    // المؤقت الفعلي يعمل الآن فقط من index.html ← tickFlash()
     // ==========================================================================
-    // 1. Flash Deals Live Countdown Timer
-    // ==========================================================================
-    function startFlashTimer() {
-        let hours = 8, minutes = 45, seconds = 30;
-        const hEl = document.getElementById('timer-hours');
-        const mEl = document.getElementById('timer-minutes');
-        const sEl = document.getElementById('timer-seconds');
-        if (!hEl || !mEl || !sEl) return;
-
-        setInterval(() => {
-            if (seconds > 0) {
-                seconds--;
-            } else {
-                seconds = 59;
-                if (minutes > 0) {
-                    minutes--;
-                } else {
-                    minutes = 59;
-                    if (hours > 0) hours--;
-                    else hours = 12;
-                }
-            }
-            hEl.textContent = String(hours).padStart(2, '0');
-            mEl.textContent = String(minutes).padStart(2, '0');
-            sEl.textContent = String(seconds).padStart(2, '0');
-        }, 1000);
-    }
-    startFlashTimer();
 
     // ==========================================================================
     // 2. PC Builder Wattage Calculator & PDF Export
