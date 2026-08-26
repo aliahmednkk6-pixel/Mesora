@@ -280,7 +280,10 @@
                 <a href="#services" class="mesora-nav-link nav-anim" style="--i:4" data-section="services">خدماتنا</a>
                 <a href="#about" class="mesora-nav-link nav-anim" style="--i:5" data-section="about">من نحن</a>
                 <a href="#faq" class="mesora-nav-link nav-anim" style="--i:6" data-section="faq">الأسئلة</a>
-                <a href="#contact" class="mesora-nav-link nav-anim" style="--i:7" data-section="contact">اتصل بنا</a>
+                                <a href="#contact" class="mesora-nav-link nav-anim" style="--i:7" data-section="contact">اتصل بنا</a>
+                <a href="#" class="mesora-nav-link nav-anim js-open-track" style="--i:8" role="button" aria-label="تتبع طلبك">
+                    تتبع طلبك <i data-lucide="package-search" class="w-3.5 h-3.5 inline-block align-middle"></i>
+                </a>
             </nav>
 
             <style>
@@ -412,7 +415,10 @@
             <a href="#featured" class="mesora-nav-link" data-section="featured">المنتجات</a>
             <a href="#services" class="mesora-nav-link" data-section="services">خدماتنا</a>
             <a href="#faq" class="mesora-nav-link" data-section="faq">الأسئلة</a>
-            <a href="#contact" class="mesora-nav-link" data-section="contact">اتصل بنا</a>
+                        <a href="#contact" class="mesora-nav-link" data-section="contact">اتصل بنا</a>
+            <a href="#" class="mesora-nav-link js-open-track" role="button" aria-label="تتبع طلبك">
+                تتبع طلبك <i data-lucide="package-search" class="w-4 h-4 inline-block align-middle"></i>
+            </a>
         </nav>
     </header>
 
@@ -460,7 +466,7 @@
                             <p class="hero-trust-value">توصيل 24 ساعة</p>
                         </div>
                     </div>
-                                        <div class="hero-trust-item">
+                                                            <div class="hero-trust-item">
                         <span class="hero-trust-icon hero-trust-icon-teal"><i data-lucide="shield-check"
                                 class="w-4 h-4"></i></span>
                         <div>
@@ -468,16 +474,6 @@
                             <p class="hero-trust-value">ضمان حقيقي 100%</p>
                         </div>
                     </div>
-                    <button type="button" id="hero-track-order-link"
-                        class="hero-trust-item cursor-pointer text-right hover:border-[rgba(0,229,255,0.6)] hover:shadow-[0_0_16px_rgba(0,163,196,0.25)] transition-all"
-                        aria-label="تتبع طلبك">
-                        <span class="hero-trust-icon hero-trust-icon-gold"><i data-lucide="package-search"
-                                class="w-4 h-4"></i></span>
-                        <div>
-                            <p class="hero-trust-label">خدمة الطلبات</p>
-                            <p class="hero-trust-value">تتبع طلبك الآن 📦</p>
-                        </div>
-                    </button>
                 </div>
             </div>
         </section>
@@ -2170,8 +2166,11 @@
         };
                 var link = document.getElementById('footer-track-order-link');
         if (link) link.addEventListener('click', function (e) { e.preventDefault(); openTrack(); });
-        var heroTrack = document.getElementById('hero-track-order-link');
+                var heroTrack = document.getElementById('hero-track-order-link');
         if (heroTrack) heroTrack.addEventListener('click', function () { openTrack(); });
+        document.querySelectorAll('.js-open-track').forEach(function (el) {
+            el.addEventListener('click', function (e) { e.preventDefault(); openTrack(); });
+        });
         if (document.getElementById('site-track-close')) document.getElementById('site-track-close').addEventListener('click', closeTrack);
         if (tOverlay) tOverlay.addEventListener('click', closeTrack);
 

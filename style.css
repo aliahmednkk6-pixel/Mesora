@@ -936,18 +936,6 @@ a.mesora-btn-secondary {
     min-width: 160px;
 }
 
-/* عنصر تتبع الطلب كزر في شريط الثقة — يرث الخط والألوان */
-button.hero-trust-item {
-    font-family: var(--font-body);
-    color: inherit;
-    appearance: none;
-    -webkit-appearance: none;
-    outline-offset: 3px;
-}
-button.hero-trust-item:hover {
-    transform: translateY(-2px);
-}
-
 .hero-trust-icon {
     width: 36px;
     height: 36px;
