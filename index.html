@@ -762,6 +762,15 @@
                     </button>
                 </div>
             </div>
+
+            <!-- شبكة عروض اليوم — تُملأ تلقائياً من المنتجات المخفّضة في لوحة التحكم -->
+            <div id="flash-deals-wrap" class="mt-6 hidden">
+                <h4 class="text-sm font-black text-white mb-3 flex items-center gap-2">
+                    <i data-lucide="flame" class="w-4 h-4 text-red-400"></i>
+                    منتجات العرض الحالية
+                </h4>
+                <div id="deals-cards" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            </div>
         </section>
 
         <!-- Featured Products -->
@@ -2248,9 +2257,13 @@
                     // إزالة أي بطاقة ثابتة متبقية خارج القالب
                     grid.querySelectorAll('article.mesora-product-card').forEach(function (a) { a.remove(); });
 
-                    var fmt = function (n) { return Number(n).toLocaleString('en-US'); };
+                                        var fmt = function (n) { return Number(n).toLocaleString('en-US'); };
+                    var dealsCards = [];
                     products.forEach(function (p) {
-                        var price = p.discount_price ? Number(p.discount_price) : Number(p.selling_price);
+                        var hasDeal = p.discount_price && Number(p.discount_price) > 0
+                            && Number(p.selling_price) > 0 && Number(p.discount_price) < Number(p.selling_price);
+                        var offPct = hasDeal ? Math.round((1 - Number(p.discount_price) / Number(p.selling_price)) * 100) : 0;
+                        var price = hasDeal ? Number(p.discount_price) : Number(p.selling_price);
                         var inStock = Number(p.stock_quantity) > 0;
                         var used = p.condition_type === 'used';
                         var img = p.main_image || 'picture/logo.png';
@@ -2271,6 +2284,7 @@
                                     '<img src="' + img + '" alt="' + p.name_ar + '" loading="lazy" decoding="async" width="400" height="300" class="mesora-product-img">' +
                                 '</a>' +
                                 '<span class="mesora-product-badge' + (used ? ' mesora-badge-used' : '') + '">' + (used ? 'مستعمل' : 'جديد') + '</span>' +
+                                (hasDeal ? '<span class="mesora-discount-badge">-' + offPct + '%</span>' : '') +
                             '</div>' +
                             '<div class="mesora-product-body">' +
                                 '<h3><a href="product.html?id=' + p.id + '" class="mesora-product-link">' + p.name_ar + '</a></h3>' +
@@ -2280,6 +2294,7 @@
                                     '<div class="mesora-price-block">' +
                                         '<span class="mesora-price-label">السعر</span>' +
                                         '<span class="mesora-price">' + fmt(price) + ' <small>د.ع</small></span>' +
+                                        (hasDeal ? '<span class="mesora-old-price">' + fmt(p.selling_price) + ' <small>د.ع</small></span>' : '') +
                                     '</div>' +
                                 '</div>' +
                                 '<div class="mesora-product-footer flex items-center gap-2">' +
@@ -2291,7 +2306,23 @@
                                 '</div>' +
                             '</div>';
                         grid.appendChild(card);
+                        if (hasDeal) dealsCards.push(card.cloneNode(true));
                     });
+
+                    // ===== تعبئة شبكة عروض Flash بكل منتج مخفّض نشط =====
+                    var dealsWrap = document.getElementById('flash-deals-wrap');
+                    if (dealsWrap) {
+                        if (dealsCards.length) {
+                            var dTarget = document.getElementById('deals-cards');
+                            if (dTarget) {
+                                dTarget.innerHTML = '';
+                                dealsCards.forEach(function (dc) { dTarget.appendChild(dc); });
+                            }
+                            dealsWrap.classList.remove('hidden');
+                        } else {
+                            dealsWrap.classList.add('hidden');
+                        }
+                    }
                 }
 
                 if (typeof lucide !== 'undefined') lucide.createIcons();
