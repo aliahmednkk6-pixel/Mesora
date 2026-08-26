@@ -2088,7 +2088,7 @@
     <div class="mesora-toast" id="mesora-toast" role="status" aria-live="polite"></div>
 
     <script src="vendor/lucide.min.js" defer></script>
-    <script src="script.js?v=1.1.0" defer></script>
+    <script src="script.js?v=1.1.1" defer></script>
     <script>
     // ===== إتمام الطلب داخل الموقع (يحفظ في قاعدة البيانات) =====
     document.addEventListener('DOMContentLoaded', function () {
@@ -2517,8 +2517,11 @@
                     if (tM) tM.textContent = pad2(Math.floor(diff / 60000) % 60);
                     if (tS) tS.textContent = pad2(Math.floor(diff / 1000) % 60);
                 };
-                tickFlash();
-                setInterval(tickFlash, 1000);
+                                tickFlash();
+                // شبكة أمان: مؤقّت واحد فقط — لو أعيد تنفيذ الكود لأي سبب
+                // نلغي العدّاد السابق أولاً حتى لا تتنافس نسختان على نفس الخانات
+                if (window.__mesoraFlashTimerId) clearInterval(window.__mesoraFlashTimerId);
+                window.__mesoraFlashTimerId = setInterval(tickFlash, 1000);
 
                 // 2) عدّاد "بقي X قطعة" — أقل مخزون بين المنتجات المخفّضة
                 var stockNote = document.getElementById('flash-stock-note');
