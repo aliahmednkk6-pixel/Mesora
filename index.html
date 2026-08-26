@@ -239,7 +239,7 @@
             </button>
 
             <!-- Advanced Search Bar (تحسين 1 + 6) -->
-            <div class="relative w-72 hidden md:block" id="advanced-search-wrap">
+            <div class="relative w-96 hidden md:block" id="advanced-search-wrap">
                 <form class="relative" id="search-form" role="search">
                     <label for="site-search" class="sr-only">ابحث عن قطعة</label>
                     <input type="search" id="site-search" name="q" placeholder="ابحث عن قطعة..."
@@ -292,10 +292,10 @@
                     padding-left: 1.5rem;
                     padding-right: 1.5rem;
                 }
-                #advanced-search-wrap {
-                    width: 13rem !important;
+                                #advanced-search-wrap {
+                    width: 17rem !important;
                     flex-shrink: 1;
-                    min-width: 10rem;
+                    min-width: 12rem;
                 }
                 /* الشعار يظهر بشكل كامل */
                 .mesora-header-logo {
@@ -460,7 +460,7 @@
                             <p class="hero-trust-value">توصيل 24 ساعة</p>
                         </div>
                     </div>
-                    <div class="hero-trust-item">
+                                        <div class="hero-trust-item">
                         <span class="hero-trust-icon hero-trust-icon-teal"><i data-lucide="shield-check"
                                 class="w-4 h-4"></i></span>
                         <div>
@@ -468,6 +468,16 @@
                             <p class="hero-trust-value">ضمان حقيقي 100%</p>
                         </div>
                     </div>
+                    <button type="button" id="hero-track-order-link"
+                        class="hero-trust-item cursor-pointer text-right hover:border-[rgba(0,229,255,0.6)] hover:shadow-[0_0_16px_rgba(0,163,196,0.25)] transition-all"
+                        aria-label="تتبع طلبك">
+                        <span class="hero-trust-icon hero-trust-icon-gold"><i data-lucide="package-search"
+                                class="w-4 h-4"></i></span>
+                        <div>
+                            <p class="hero-trust-label">خدمة الطلبات</p>
+                            <p class="hero-trust-value">تتبع طلبك الآن 📦</p>
+                        </div>
+                    </button>
                 </div>
             </div>
         </section>
@@ -2158,8 +2168,10 @@
             tModal.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
             document.body.style.overflow = '';
         };
-        var link = document.getElementById('footer-track-order-link');
+                var link = document.getElementById('footer-track-order-link');
         if (link) link.addEventListener('click', function (e) { e.preventDefault(); openTrack(); });
+        var heroTrack = document.getElementById('hero-track-order-link');
+        if (heroTrack) heroTrack.addEventListener('click', function () { openTrack(); });
         if (document.getElementById('site-track-close')) document.getElementById('site-track-close').addEventListener('click', closeTrack);
         if (tOverlay) tOverlay.addEventListener('click', closeTrack);
 
