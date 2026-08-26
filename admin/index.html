@@ -1069,10 +1069,12 @@
     // ============================================================
     let dealsCache = [];
 
-    function isDealActive(p) {
+        function isDealActive(p) {
         if (!p.discount_price || Number(p.discount_price) <= 0) return false;
         if (!p.deal_ends_at) return true;
-        const d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
+        var str = String(p.deal_ends_at).replace(' ', 'T');
+        if (!/(z|[+-]\d\d:?\d\d)$/i.test(str)) str += 'Z';
+        var d = new Date(str);
         return isNaN(d.getTime()) || d.getTime() > Date.now();
     }
 
@@ -1090,20 +1092,30 @@
         const filter = document.getElementById('deals-filter')?.value || 'all';
         const fmtN = n => Number(n || 0).toLocaleString('ar-IQ');
 
-        let list = dealsCache.slice();
+                let list = dealsCache.slice();
         if (filter === 'active') list = list.filter(isDealActive);
         if (q) list = list.filter(p => (p.name_ar || '').toLowerCase().includes(q) || (p.sku || '').toLowerCase().includes(q));
         // النشطة أولاً ثم بالاسم
         list.sort((a, b) => (isDealActive(b) - isDealActive(a)) || String(a.name_ar).localeCompare(String(b.name_ar), 'ar'));
 
+        // المخزون UTC → للعرض بتوقيت الجهاز المحلي
+        var parseDealDateAdmin = function (s) {
+            var str = String(s || '');
+            if (!str) return null;
+            var iso = str.includes('T') ? str : str.replace(' ', 'T');
+            if (!/(z|[+-]\d\d:?\d\d)$/i.test(iso)) iso += 'Z';
+            var d = new Date(iso);
+            return isNaN(d.getTime()) ? null : d;
+        };
+
         tbody.innerHTML = list.map(p => {
             const active = isDealActive(p);
-            let endVal = '';
+                        let endVal = '';
             if (p.deal_ends_at) {
-                const d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
-                if (!isNaN(d.getTime())) {
+                var dEnd = parseDealDateAdmin(p.deal_ends_at);
+                if (dEnd) {
                     const pad = n => String(n).padStart(2, '0');
-                    endVal = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                    endVal = `${dEnd.getFullYear()}-${pad(dEnd.getMonth()+1)}-${pad(dEnd.getDate())}T${pad(dEnd.getHours())}:${pad(dEnd.getMinutes())}`;
                 }
             }
             const offPct = (p.discount_price && Number(p.selling_price) > 0)
@@ -1144,10 +1156,17 @@
             return;
         }
 
+                // تحويل وقت الإدخال المحلي → UTC قبل الإرسال، ليقرأه الموقع صحيحاً بأي توقيت
+        var toUtcString = function (v) {
+            if (!v) return null;
+            var d = new Date(v);
+            return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 19).replace('T', ' ');
+        };
+
         const body = {
             id: id,
             discount_price: dpRaw === '' ? null : Number(dpRaw),
-            deal_ends_at: deRaw === '' ? null : deRaw.replace('T', ' ')
+            deal_ends_at: toUtcString(deRaw)
         };
 
         const json = await api('products.php', {method: 'PUT', body: JSON.stringify(body)});

@@ -166,9 +166,10 @@ if ($method === 'PUT') {
                 $val = $val === null || $val === '' ? null : (float)$val;
             } elseif (in_array($field, ['is_featured', 'is_active'])) {
                 $val = (int)(bool)$val;
-            } elseif ($field === 'deal_ends_at') {
-                // يقبل صيغة DATETIME أو يفرّغه لإلغاء العرض
-                $val = $val === null || $val === '' ? null : date('Y-m-d H:i:s', strtotime($val));
+                        } elseif ($field === 'deal_ends_at') {
+                // يُستقبل من لوحة التحكم بصيغة UTC (ISO) ويُخزَّن خاماً كما هو —
+                // تحويله لتوقيت زائر الموقع المحلي يحدث في المتصفح بإضافة 'Z'
+                $val = $val === null || $val === '' ? null : substr(str_replace('T', ' ', trim($val)), 0, 19);
             }
             $params[] = $val;
         }

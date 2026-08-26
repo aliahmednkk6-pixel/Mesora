@@ -2452,22 +2452,35 @@
                         list.insertAdjacentHTML('afterbegin', dbReviews);
                     });
 
-                // ===== قسم التخفيضات: مؤقّت حقيقي + عدّاد الكمية + المشاركة =====
-                // 1) تحديد نهاية العرض: من قاعدة البيانات (deal_ends_at)
-                //    وإن لم يُضبط: نهاية اليوم الحالي (عرض يومي متجدد تلقائياً)
+                                // ===== قسم التخفيضات: مؤقّت حقيقي + عدّاد الكمية + المشاركة =====
+                // 1) تحديد نهاية العرض من قاعدة البيانات (deal_ends_at مخزّنة UTC)
+                //    التحويل لتوقيت الزائر المحلي يحدث هنا بإضافة 'Z' عند التحليل
+                var parseDealDate = function (s) {
+                    var str = String(s || '');
+                    if (!str) return null;
+                    var iso = str.replace(' ', 'T');
+                    if (!/(z|[+-]\d\d:?\d\d)$/i.test(iso)) iso += 'Z';
+                    var d = new Date(iso);
+                    return isNaN(d.getTime()) ? null : d;
+                };
+
                 var dealEnd = null;
-                var withDeal = products.filter(function (p) { return p.deal_ends_at; });
-                if (withDeal.length) {
-                    withDeal.forEach(function (p) {
-                        var d = new Date(String(p.deal_ends_at).replace(' ', 'T'));
-                        if (!isNaN(d.getTime()) && d.getTime() > Date.now() &&
-                            (dealEnd === null || d.getTime() < dealEnd)) {
-                            dealEnd = d.getTime(); // أقرب عرض ينتهي
-                        }
-                    });
-                }
-                var isDbDeal = dealEnd !== null;
+                var hasAnyDbEnd = false;
+                products.forEach(function (p) {
+                    if (!(p.discount_price && Number(p.discount_price) > 0)) return; // المنتجات المخفّضة فقط
+                    if (!p.deal_ends_at) { hasAnyDbEnd = true; return; }             // عرض مستمر بلا نهاية
+                    hasAnyDbEnd = true;
+                    var d = parseDealDate(p.deal_ends_at);
+                    if (d && d.getTime() > Date.now() &&
+                        (dealEnd === null || d.getTime() < dealEnd)) {
+                        dealEnd = d.getTime(); // أقرب عرض ينتهي
+                    }
+                });
+
+                // ضُبط وقت من لوحة التحكم؟ المؤقت مرتبط به حتى لو انتهى (يظهر 00:00)
+                var isDbDeal = hasAnyDbEnd;
                 if (!isDbDeal) {
+                    // لا ضبط إطلاقاً → عرض يومي متجدد تلقائياً
                     var eod = new Date();
                     eod.setHours(23, 59, 59, 999);
                     dealEnd = eod.getTime();
