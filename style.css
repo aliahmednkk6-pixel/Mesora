@@ -5991,3 +5991,23 @@ html.tw-loading #compare-modal { display: none; }
 @media (max-width: 639px) {
     .lux-cat-mini { min-height: clamp(140px, 30vw, 190px); }
 }
+/* ===== Mini category cards: product images (reference: sh) ===== */
+.lux-cat-mini { position: relative; overflow: hidden; }
+.lux-cat-mini-img {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 72%;
+    width: 55%;
+    object-fit: contain;
+    object-position: left bottom;
+    opacity: .9;
+    pointer-events: none;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(to right, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 55%, transparent 100%);
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,.55));
+    transition: transform var(--transition-fast, .3s) var(--ease-out, ease), opacity var(--transition-fast, .3s);
+}
+.lux-cat-mini:hover .lux-cat-mini-img { transform: scale(1.06) translateY(-3px); opacity: 1; }
+.lux-cat-mini .lux-cat-body { position: relative; z-index: 2; }
