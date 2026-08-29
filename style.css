@@ -6084,6 +6084,8 @@ html.tw-loading #compare-modal { display: none; }
 
     z-index: 2;
     transition: transform .5s ease;
+    -webkit-mask-image: radial-gradient(ellipse 80% 85% at 55% 50%, #000 52%, transparent 84%);
+    mask-image: radial-gradient(ellipse 80% 85% at 55% 50%, #000 52%, transparent 84%);
 }
 .mesora-category-card:hover .mesora-category-image { transform: scale(1.04); }
 .mesora-card-overlay {
