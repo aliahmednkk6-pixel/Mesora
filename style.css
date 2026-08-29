@@ -5669,8 +5669,9 @@ html.tw-loading #compare-modal { display: none; }
     --lux-ink: var(--mesora-bg);
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(12px, 2.2vw, 22px);
-    max-width: 980px;
+    gap: clamp(12px, 1.6vw, 20px);
+    max-width: 1870px;
+    width: 100%;
     margin: 0 auto;
     padding-left: clamp(16px, 5vw, 60px);
     padding-right: clamp(16px, 5vw, 60px);
@@ -5701,16 +5702,20 @@ html.tw-loading #compare-modal { display: none; }
     background: linear-gradient(to right, transparent, var(--lux-gold-soft));
 }
 
-/* ---- Hero grid: 1 large (left) + 2 medium (right) ---- */
+/* ---- Hero row: 3 cards side-by-side (reference "sh") ----
+   GPU (wide ≈ 2:1, LEFT), Motherboard (middle), CPU (RIGHT).
+   RTL: col1 = right, col3 = left. All share the same row height (~475px),
+   GPU gets ~2/4 of the width so its aspect is ~2:1, the two mediums stay near-square. */
 .lux-cat-hero {
     display: grid;
-    grid-template-columns: 1fr 1.9fr;   /* RTL: col1 = right (small), col2 = left (large-GPU) */
-    grid-template-rows: 1fr 1fr;
-    gap: clamp(12px, 2.2vw, 22px);
+    grid-template-columns: 0.94fr 1.08fr 2.02fr;  /* RTL order: [CPU] [Mobo] [GPU] */
+    grid-template-rows: 1fr;
+    gap: clamp(12px, 1.6vw, 20px);
+    align-items: stretch;
 }
-.lux-cat-featured { grid-column: 2; grid-row: 1 / 3; }
+.lux-cat-featured { grid-column: 3; grid-row: 1; }
 .lux-cat-medi:nth-of-type(1) { grid-column: 1; grid-row: 1; }
-.lux-cat-medi:nth-of-type(2) { grid-column: 1; grid-row: 2; }
+.lux-cat-medi:nth-of-type(2) { grid-column: 2; grid-row: 1; }
 
 @media (max-width: 1023px) {
     .lux-cat-hero { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
@@ -5835,11 +5840,10 @@ html.tw-loading #compare-modal { display: none; }
 /* big cards: image replaces the icon tile */
 .lux-cat-card .lux-cat-photo,
 .lux-cat-card .lux-cat-medi-photo { display: none; }
-/* consistent heights: featured tall, medium stacked.
-   Ratio kept so that 2×medium + gap(22px max / 12px min) == featured height exactly:
-   max: 2×172 + 22 = 366 ≈ 365 · min: 2×140 + 12 = 292 ≈ 295 */
-.lux-cat-featured { min-height: clamp(295px, 30vw, 365px); }
-.lux-cat-medi { min-height: clamp(140px, 14.5vw, 172px); }
+/* Row height ~475px on desktop (all 3 hero cards share equal height),
+   GPU ≈ 2:1, mediums near-square. Rescales responsively via clamp. */
+.lux-cat-featured,
+.lux-cat-medi { min-height: clamp(300px, 32vw, 475px); }
 
 /* Body */
 .lux-cat-card .glass-cat-card-inner {
@@ -5988,10 +5992,10 @@ html.tw-loading #compare-modal { display: none; }
     box-shadow: 0 0 16px var(--lux-gold-glow);
 }
 
-/* Mini card vertical rhythm */
-.lux-cat-mini { min-height: clamp(150px, 18vw, 196px); }
+/* Mini card vertical rhythm: reference ratio 7:5 (350×250, landscape) */
+.lux-cat-mini { aspect-ratio: 7 / 5; min-height: clamp(160px, 20vw, 250px); }
 @media (max-width: 639px) {
-    .lux-cat-mini { min-height: clamp(140px, 30vw, 190px); }
+    .lux-cat-mini { aspect-ratio: 4 / 3; min-height: clamp(150px, 32vw, 210px); }
 }
 /* ===== Mini category cards: product images (reference: sh) ===== */
 .lux-cat-mini { position: relative; overflow: hidden; }
