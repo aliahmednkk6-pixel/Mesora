@@ -6053,11 +6053,8 @@ html.tw-loading #compare-modal { display: none; }
 }
 .mesora-top-grid,
 .mesora-bottom-grid { display: grid; gap: 16px; }
-.mesora-top-grid { grid-template-columns: 2.1fr 1fr 1.05fr; direction: ltr; }
-.mesora-gpu-card { grid-column: 3; grid-row: 1; }
-.mesora-cpu-card { grid-column: 2; grid-row: 1; }
-.mesora-mobo-card { grid-column: 1; grid-row: 1; }
-.mesora-bottom-grid { grid-template-columns: repeat(5, 1fr); margin-top: 24px; direction: ltr; }
+.mesora-top-grid { grid-template-columns: 2.1fr 1fr 1.05fr; }
+.mesora-bottom-grid { grid-template-columns: repeat(5, 1fr); margin-top: 24px; }
 
 .mesora-category-card {
     position: relative;
@@ -6068,10 +6065,10 @@ html.tw-loading #compare-modal { display: none; }
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.03);
     transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
 }
-.mesora-gpu-card { min-height: clamp(300px, 26vw, 400px); }
+.mesora-gpu-card,
 .mesora-cpu-card,
-.mesora-mobo-card { aspect-ratio: 1 / 1; min-height: 0; }
-.mesora-mini-card { aspect-ratio: 1 / 1; min-height: 0; }
+.mesora-mobo-card { min-height: clamp(300px, 26vw, 400px); }
+.mesora-mini-card { min-height: clamp(170px, 15vw, 245px); }
 .mesora-category-card:hover {
     transform: translateY(-3px);
     border-color: #E5B94F;
@@ -6231,17 +6228,15 @@ html.tw-loading #compare-modal { display: none; }
 
 @media (max-width: 1200px) {
     .mesora-top-grid { grid-template-columns: 1.5fr 1fr; }
-    .mesora-gpu-card { grid-column: 1 / -1; grid-row: 1; }
-    .mesora-cpu-card { grid-column: 1; grid-row: 2; }
-    .mesora-mobo-card { grid-column: 2; grid-row: 2; }
+    .mesora-gpu-card { grid-column: span 2; }
     .mesora-bottom-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
     .mesora-category-showcase { padding-inline: 16px; }
     .mesora-top-grid,
     .mesora-bottom-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
-    .mesora-gpu-card { grid-column: 1; grid-row: auto; min-height: 240px; }
-    .mesora-cpu-card, .mesora-mobo-card { grid-column: 1; grid-row: auto; aspect-ratio: auto; min-height: 210px; }
-    .mesora-mini-card { aspect-ratio: auto; min-height: 180px; }
+    .mesora-gpu-card { grid-column: span 1; min-height: 220px; }
+    .mesora-cpu-card, .mesora-mobo-card { min-height: 190px; }
+    .mesora-mini-card { min-height: 165px; }
     .mesora-category-content { width: min(70%, 320px); }
 }
