@@ -5657,15 +5657,16 @@ html.tw-loading #compare-modal { display: none; }
    Replaces the compact glass grid. Keeps .glass-cat-* hooks for dynamic JS.
    ========================================================================== */
 .lux-cat-wrap {
-    --lux-gold: #e8c76a;
-    --lux-gold-soft: rgba(232, 199, 106, 0.42);
-    --lux-gold-faint: rgba(232, 199, 106, 0.16);
-    --lux-gold-glow: rgba(232, 199, 106, 0.22);
-    --lux-teal: #2bd1c4;
-    --lux-teal-soft: rgba(43, 209, 196, 0.4);
-    --lux-bg-top: rgba(32, 37, 49, 0.82);
-    --lux-bg-bot: rgba(9, 13, 19, 0.88);
-    --lux-ink: #0a0a0a;
+    /* هوية MESORA الرسمية — مربوطة بمتغيرات :root */
+    --lux-gold: var(--mesora-gold);
+    --lux-gold-soft: var(--mesora-border-strong);
+    --lux-gold-faint: var(--mesora-border);
+    --lux-gold-glow: var(--mesora-gold-glow);
+    --lux-teal: var(--mesora-teal);
+    --lux-teal-soft: var(--border-teal);
+    --lux-bg-top: rgba(28, 39, 51, 0.85);
+    --lux-bg-bot: rgba(10, 15, 20, 0.92);
+    --lux-ink: var(--mesora-bg);
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(12px, 2.2vw, 22px);
@@ -5738,13 +5739,13 @@ html.tw-loading #compare-modal { display: none; }
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border-radius: clamp(14px, 2vw, 22px);
+    border-radius: var(--mesora-radius-lg);
     border: 1px solid var(--lux-gold-faint) !important;
     background: linear-gradient(165deg, var(--lux-bg-top), var(--lux-bg-bot));
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease, border-color 0.45s ease;
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: transform 0.35s var(--ease-out), box-shadow var(--transition-fast), border-color var(--transition-fast);
     text-decoration: none;
     cursor: pointer;
     transform-style: preserve-3d;
@@ -5753,7 +5754,7 @@ html.tw-loading #compare-modal { display: none; }
 .lux-cat-card:hover {
     transform: translateY(-4px) !important;
     border-color: var(--lux-gold-soft) !important;
-    box-shadow: 0 26px 52px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--lux-gold-soft) inset, 0 0 34px var(--lux-gold-glow);
+    box-shadow: 0 26px 52px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--mesora-border-strong) inset, 0 0 30px var(--mesora-gold-glow);
 }
 
 /* Mesopotamian wedge pattern (subtle, corner only) */
@@ -5818,12 +5819,12 @@ html.tw-loading #compare-modal { display: none; }
     position: relative;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--lux-gold-faint);
+    border: 1px solid var(--border-teal-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--lux-gold);
-    border-radius: clamp(12px, 1.6vw, 18px);
+    border-radius: var(--mesora-radius);
     transition: border-color 0.3s ease, background 0.3s ease;
 }
 .lux-cat-card .glass-cat-icon svg,
@@ -5834,9 +5835,9 @@ html.tw-loading #compare-modal { display: none; }
 }
 .lux-cat-card:hover .glass-cat-icon {
     transform: none;
-    background: rgba(232, 199, 106, 0.08);
-    color: var(--lux-gold);
-    border-color: var(--lux-gold-soft);
+    background: rgba(197, 160, 89, 0.08);
+    color: var(--mesora-gold-light);
+    border-color: var(--mesora-border-strong);
     box-shadow: none;
 }
 
@@ -5880,7 +5881,7 @@ html.tw-loading #compare-modal { display: none; }
     background: var(--lux-gold-faint);
     border: 1px solid var(--lux-gold-soft);
     padding: 4px 10px;
-    border-radius: 99px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
 }
 .lux-cat-num {
@@ -5892,22 +5893,22 @@ html.tw-loading #compare-modal { display: none; }
 .lux-cat-card:hover .lux-cat-num { opacity: 1; transform: none; }
 
 /* Name + description */
-.lux-cat-name { color: #fff; font-size: clamp(1.05rem, 2vw, 1.6rem); margin: 6px 0 0; line-height: 1.25; }
+.lux-cat-name { color: var(--mesora-text); font-size: clamp(1.05rem, 2vw, 1.6rem); margin: 6px 0 0; line-height: 1.25; }
 .lux-cat-name-l { font-size: clamp(0.95rem, 1.3vw, 1.2rem); }
 .lux-cat-name-s { font-size: clamp(0.9rem, 1.1vw, 1.05rem); margin: 4px 0 0; }
-.lux-cat-desc { color: #9aa7b8; font-size: clamp(10px, 0.9vw, 12px); margin: 0; }
+.lux-cat-desc { color: var(--mesora-text-muted); font-size: clamp(10px, 0.9vw, 12px); margin: 0; }
 
 /* Progress */
 .lux-cat-progress {
     height: 4px;
     margin: 10px 0 14px;
     background: rgba(255, 255, 255, 0.07);
-    border-radius: 99px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
     width: 100%;
 }
 .lux-cat-progress .glass-cat-progress-bar {
-    box-shadow: 0 0 8px var(--bar-color, #e8c76a);
+    box-shadow: 0 0 8px var(--bar-color, var(--mesora-gold));
 }
 
 /* Footer */
@@ -5928,12 +5929,12 @@ html.tw-loading #compare-modal { display: none; }
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: #ecd99a;
+    color: var(--mesora-gold-light);
     font-weight: 700;
     padding: 5px 12px;
     border: 1px solid var(--lux-gold-soft);
     background: transparent;
-    border-radius: 99px;
+    border-radius: var(--radius-sm);
     transition: all 0.3s ease;
 }
 .lux-cat-btn svg,
