@@ -5566,6 +5566,12 @@ a.mesora-btn-secondary {
 /* ==========================================================================
    Product Comparison Drawer & Modal
    ========================================================================== */
+/* إخفاء درج/إشعار المقارنة افتراضياً أثناء تحميل Tailwind فقط (مستقل عن
+   الكلاس hidden الذي لا يعمل قبل وصول Tailwind). بعد الجهوزية يعمل الـ JS
+   الذي يظهره عند الضغط على «مقارنة المنتج» */
+html.tw-loading #compare-drawer,
+html.tw-loading #compare-modal { display: none; }
+
 .compare-drawer {
     position: fixed;
     bottom: 74px;
