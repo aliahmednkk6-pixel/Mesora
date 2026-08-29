@@ -5809,25 +5809,33 @@ html.tw-loading #compare-modal { display: none; }
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.55;
+    opacity: 0.45;
     pointer-events: none;
     z-index: 0;
     transition: opacity 0.4s var(--ease-out), transform 0.5s var(--ease-out);
 }
-.lux-cat-card:hover .lux-cat-bgimg { opacity: 0.75; transform: scale(1.04); }
+.lux-cat-card:hover .lux-cat-bgimg { opacity: 0.6; transform: scale(1.04); }
 /* fade image toward the text side (RTL: text on right) */
+/* RTL: text on right — strong dark scrim so Arabic text always readable */
 .lux-cat-bgimg::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to left, transparent 30%, var(--lux-bg-bot) 78%);
+    background:
+        linear-gradient(to left, rgba(10, 15, 20, 0.55) 0%, var(--lux-bg-bot) 72%),
+        linear-gradient(to top, var(--lux-bg-bot) 8%, rgba(10, 15, 20, 0.35) 55%, rgba(10, 15, 20, 0.15) 100%);
 }
 .lux-cat-medi .lux-cat-bgimg::after {
-    background: linear-gradient(to left, transparent 15%, var(--lux-bg-bot) 70%);
+    background:
+        linear-gradient(to left, rgba(10, 15, 20, 0.45) 0%, var(--lux-bg-bot) 65%),
+        linear-gradient(to top, var(--lux-bg-bot) 10%, rgba(10, 15, 20, 0.4) 100%);
 }
 /* big cards: image replaces the icon tile */
 .lux-cat-card .lux-cat-photo,
 .lux-cat-card .lux-cat-medi-photo { display: none; }
+/* consistent heights: featured tall, medium stacked */
+.lux-cat-featured { min-height: clamp(340px, 38vw, 440px); }
+.lux-cat-medi { min-height: clamp(165px, 18vw, 205px); }
 
 /* Body */
 .lux-cat-card .glass-cat-card-inner {
