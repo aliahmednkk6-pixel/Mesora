@@ -325,6 +325,32 @@
                     flex-shrink: 1;
                     min-width: 12rem;
                 }
+                /* إبقاء الشعار ظاهراً دائماً على الشاشات المتوسطة —
+                   تصغير البحث وتباعد القائمة عند الحاجة بدل إخراج الشعار */
+                @media (max-width: 1500px) {
+                    #advanced-search-wrap {
+                        width: 12rem !important;
+                        min-width: 9rem;
+                    }
+                    .mesora-nav {
+                        gap: 1rem !important;
+                    }
+                    .mesora-nav-link {
+                        font-size: 12px;
+                    }
+                }
+                @media (max-width: 1280px) {
+                    .mesora-nav {
+                        gap: 0.6rem !important;
+                    }
+                    .mesora-nav-link {
+                        font-size: 11.5px;
+                        padding: 0.4rem 0.15rem;
+                    }
+                    .mesora-header .container {
+                        gap: 1rem;
+                    }
+                }
                 /* الشعار يظهر بشكل كامل */
                 .mesora-header-logo {
                     width: 52px !important;
@@ -417,7 +443,7 @@
                     </div>
                 </div>
 
-                <a href="#home" class="flex items-center gap-3 shrink-0">
+                <a href="#home" class="flex items-center gap-3 shrink-0" style="flex-shrink:0;">
                     <div class="text-right hidden sm:block">
                         <p class="mesora-brand-name font-extrabold text-xl leading-none">MESORA</p>
                         <span class="mesora-brand-tagline block uppercase">The Future of Tech</span>

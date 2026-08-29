@@ -1296,6 +1296,7 @@ a.mesora-btn-secondary {
 .mesora-header-logo {
     width: 48px;
     height: 48px;
+    flex-shrink: 0;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--mesora-border);
