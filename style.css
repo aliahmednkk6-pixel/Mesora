@@ -6053,7 +6053,7 @@ html.tw-loading #compare-modal { display: none; }
 }
 .mesora-top-grid,
 .mesora-bottom-grid { display: grid; gap: 16px; }
-.mesora-top-grid { grid-template-columns: 2.1fr 1fr 1.05fr; }
+.mesora-top-grid { grid-template-columns: 2.1fr 1fr 1.05fr; gap: 32px; }
 .mesora-bottom-grid { grid-template-columns: repeat(5, 1fr); margin-top: 24px; }
 
 .mesora-category-card {
@@ -6088,6 +6088,8 @@ html.tw-loading #compare-modal { display: none; }
 
 }
 .mesora-category-card:hover .mesora-category-image { transform: scale(1.04); }
+.mesora-cpu-card .mesora-category-image,
+.mesora-mobo-card .mesora-category-image { object-fit: cover; }
 .mesora-card-overlay {
     position: absolute;
     inset: 0;
