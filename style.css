@@ -5670,8 +5670,10 @@ html.tw-loading #compare-modal { display: none; }
     display: grid;
     grid-template-columns: 1fr;
     gap: clamp(12px, 2.2vw, 22px);
-    max-width: 1180px;
+    max-width: 980px;
     margin: 0 auto;
+    padding-left: clamp(16px, 5vw, 60px);
+    padding-right: clamp(16px, 5vw, 60px);
     direction: rtl;
 }
 
@@ -5834,8 +5836,8 @@ html.tw-loading #compare-modal { display: none; }
 .lux-cat-card .lux-cat-photo,
 .lux-cat-card .lux-cat-medi-photo { display: none; }
 /* consistent heights: featured tall, medium stacked */
-.lux-cat-featured { min-height: clamp(340px, 38vw, 440px); }
-.lux-cat-medi { min-height: clamp(165px, 18vw, 205px); }
+.lux-cat-featured { min-height: clamp(260px, 28vw, 330px); }
+.lux-cat-medi { min-height: clamp(125px, 14vw, 155px); }
 
 /* Body */
 .lux-cat-card .glass-cat-card-inner {
