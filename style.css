@@ -6090,11 +6090,11 @@ html.tw-loading #compare-modal { display: none; }
     inset: 0;
     z-index: 3;
     pointer-events: none;
-    background: linear-gradient(90deg,
-        rgba(5, 10, 14, .15) 0%,
-        rgba(5, 10, 14, .35) 40%,
-        rgba(5, 10, 14, .78) 72%,
-        rgba(5, 10, 14, .95) 100%);
+    background: linear-gradient(270deg,
+        rgba(5, 10, 14, .30) 0%,
+        rgba(5, 10, 14, .18) 45%,
+        rgba(5, 10, 14, .10) 100%
+        );
 }
 .mesora-card-glow {
     position: absolute;
@@ -6137,7 +6137,7 @@ html.tw-loading #compare-modal { display: none; }
 .mesora-category-content {
     position: absolute;
     inset-block: 0;
-    inset-inline-start: 0;
+    inset-inline-end: 0;
     z-index: 5;
     display: flex;
     flex-direction: column;
