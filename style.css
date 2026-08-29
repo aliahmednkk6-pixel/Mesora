@@ -5835,9 +5835,11 @@ html.tw-loading #compare-modal { display: none; }
 /* big cards: image replaces the icon tile */
 .lux-cat-card .lux-cat-photo,
 .lux-cat-card .lux-cat-medi-photo { display: none; }
-/* consistent heights: featured tall, medium stacked */
-.lux-cat-featured { min-height: clamp(260px, 28vw, 330px); }
-.lux-cat-medi { min-height: clamp(125px, 14vw, 155px); }
+/* consistent heights: featured tall, medium stacked.
+   Ratio kept so that 2×medium + gap(22px max / 12px min) == featured height exactly:
+   max: 2×172 + 22 = 366 ≈ 365 · min: 2×140 + 12 = 292 ≈ 295 */
+.lux-cat-featured { min-height: clamp(295px, 30vw, 365px); }
+.lux-cat-medi { min-height: clamp(140px, 14.5vw, 172px); }
 
 /* Body */
 .lux-cat-card .glass-cat-card-inner {
@@ -5987,7 +5989,7 @@ html.tw-loading #compare-modal { display: none; }
 }
 
 /* Mini card vertical rhythm */
-.lux-cat-mini { min-height: clamp(156px, 20vw, 206px); }
+.lux-cat-mini { min-height: clamp(150px, 18vw, 196px); }
 @media (max-width: 639px) {
     .lux-cat-mini { min-height: clamp(140px, 30vw, 190px); }
 }
