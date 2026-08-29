@@ -6040,3 +6040,178 @@ html.tw-loading #compare-modal { display: none; }
         linear-gradient(to top, rgba(10, 15, 20, 0.78) 0%, rgba(10, 15, 20, 0.22) 42%, rgba(10, 15, 20, 0.05) 100%);
 }
 .lux-cat-mini-img { filter: drop-shadow(0 6px 14px rgba(0,0,0,.45)) saturate(1.08) contrast(1.05); }
+
+/* ==========================================================================
+   MESORA Category Showcase — isolated section styles (prefix: .mesora-)
+   ========================================================================== */
+.mesora-category-showcase {
+    max-width: 1655px;
+    margin-inline: auto;
+    padding-inline: 20px;
+    direction: rtl;
+    font-family: 'Cairo', sans-serif;
+}
+.mesora-top-grid,
+.mesora-bottom-grid { display: grid; gap: 16px; }
+.mesora-top-grid { grid-template-columns: 2.1fr 1fr 1.05fr; }
+.mesora-bottom-grid { grid-template-columns: repeat(5, 1fr); margin-top: 16px; }
+
+.mesora-category-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.85);
+    border-radius: 12px;
+    background: #0B141B;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.03);
+    transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+}
+.mesora-gpu-card,
+.mesora-cpu-card,
+.mesora-mobo-card { min-height: clamp(300px, 26vw, 400px); }
+.mesora-mini-card { min-height: clamp(170px, 15vw, 245px); }
+.mesora-category-card:hover {
+    transform: translateY(-3px);
+    border-color: #E5B94F;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35), 0 0 20px rgba(212, 175, 55, .08);
+}
+.mesora-category-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 2;
+    transition: transform .5s ease;
+}
+.mesora-category-card:hover .mesora-category-image { transform: scale(1.04); }
+.mesora-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(270deg,
+        rgba(5, 10, 14, .15) 0%,
+        rgba(5, 10, 14, .35) 40%,
+        rgba(5, 10, 14, .78) 72%,
+        rgba(5, 10, 14, .95) 100%);
+}
+.mesora-card-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        radial-gradient(55% 60% at 22% 50%, rgba(212, 175, 55, 0.14) 0%, transparent 70%),
+        radial-gradient(45% 55% at 78% 45%, rgba(90, 160, 220, 0.10) 0%, transparent 70%);
+}
+.mesora-category-card:hover .mesora-card-glow {
+    background:
+        radial-gradient(55% 60% at 22% 50%, rgba(212, 175, 55, 0.22) 0%, transparent 70%),
+        radial-gradient(45% 55% at 78% 45%, rgba(90, 160, 220, 0.14) 0%, transparent 70%);
+}
+
+.mesora-card-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .5;
+    background-image:
+        radial-gradient(circle at 12% 88%, rgba(212, 175, 55, 0.12) 0 1.5px, transparent 2px),
+        radial-gradient(circle at 90% 12%, rgba(212, 175, 55, 0.10) 0 1.5px, transparent 2px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 46px),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 46px);
+}
+.mesora-card-ornament {
+    position: absolute;
+    top: 10px;
+    inset-inline-start: 12px;
+    width: clamp(38px, 4vw, 56px);
+    height: auto;
+    color: #D4AF37;
+    opacity: .6;
+    z-index: 4;
+    pointer-events: none;
+}
+.mesora-category-content {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    gap: 8px;
+    width: min(58%, 380px);
+    padding: clamp(14px, 2vw, 28px);
+}
+.mesora-card-tag {
+    font-size: clamp(8px, 0.75vw, 10px);
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: #D4AF37;
+    border: 1px solid rgba(212, 175, 55, .4);
+    background: rgba(212, 175, 55, .08);
+    padding: 3px 9px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+.mesora-category-title {
+    font-weight: 800;
+    color: #EBC77A;
+    font-size: clamp(17px, 1.6vw, 24px);
+    margin: 0;
+    line-height: 1.25;
+}
+.mesora-title-xl { font-size: clamp(22px, 2.2vw, 32px); }
+.mesora-title-sm { font-size: clamp(14px, 1.3vw, 20px); color: #DDB65D; }
+.mesora-category-description {
+    font-weight: 400;
+    color: #9EA5AA;
+    font-size: clamp(10px, 0.9vw, 13px);
+    margin: 0;
+    line-height: 1.6;
+}
+.mesora-explore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    background: transparent;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
+    border-radius: 5px;
+    padding: 7px 16px;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(11px, 0.85vw, 13px);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .3s ease, color .3s ease, box-shadow .3s ease;
+}
+.mesora-btn-icon { width: 13px; height: 13px; transition: transform .3s ease; }
+.mesora-category-card:hover .mesora-explore-btn {
+    background: #D4AF37;
+    color: #071017;
+    box-shadow: 0 0 15px rgba(212, 175, 55, .25);
+}
+.mesora-category-card:hover .mesora-btn-icon { transform: translateX(-3px); }
+
+@media (max-width: 1200px) {
+    .mesora-top-grid { grid-template-columns: 1.5fr 1fr; }
+    .mesora-gpu-card { grid-column: span 2; }
+    .mesora-bottom-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+    .mesora-category-showcase { padding-inline: 16px; }
+    .mesora-top-grid,
+    .mesora-bottom-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 14px; }
+    .mesora-gpu-card { grid-column: span 1; min-height: 220px; }
+    .mesora-cpu-card, .mesora-mobo-card { min-height: 190px; }
+    .mesora-mini-card { min-height: 165px; }
+    .mesora-category-content { width: min(70%, 320px); }
+}
