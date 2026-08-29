@@ -5802,6 +5802,33 @@ html.tw-loading #compare-modal { display: none; }
 .lux-corner-br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--lux-gold-soft); border-right: 1px solid var(--lux-gold-soft); }
 .lux-corner-br::before { right: -2px; bottom: -2px; }
 
+/* Product image backdrop (reference design) */
+.lux-cat-bgimg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.4s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.lux-cat-card:hover .lux-cat-bgimg { opacity: 0.75; transform: scale(1.04); }
+/* fade image toward the text side (RTL: text on right) */
+.lux-cat-bgimg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left, transparent 30%, var(--lux-bg-bot) 78%);
+}
+.lux-cat-medi .lux-cat-bgimg::after {
+    background: linear-gradient(to left, transparent 15%, var(--lux-bg-bot) 70%);
+}
+/* big cards: image replaces the icon tile */
+.lux-cat-card .lux-cat-photo,
+.lux-cat-card .lux-cat-medi-photo { display: none; }
+
 /* Body */
 .lux-cat-card .glass-cat-card-inner {
     position: relative;
