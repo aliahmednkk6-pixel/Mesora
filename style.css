@@ -6022,3 +6022,21 @@ html.tw-loading #compare-modal { display: none; }
 }
 .lux-cat-mini .lux-cat-body { position: relative; z-index: 2; }
 .lux-cat-mini .glass-cat-icon { display: none; }
+
+/* ---- Refinements: spacing / left text / image prominence ---- */
+/* 1) Larger spacing between the bottom (mini) category cards */
+.lux-cat-row { gap: clamp(20px, 3vw, 32px); }
+
+/* 2) Mini cards: text on the LEFT side */
+.lux-cat-mini .lux-cat-body { text-align: left; align-items: flex-start; }
+.lux-cat-mini .lux-cat-body .lux-cat-top { justify-content: flex-start; flex-direction: row-reverse; }
+.lux-cat-mini .lux-cat-name-s,
+.lux-cat-mini .lux-cat-desc { text-align: left; }
+.lux-cat-mini .lux-cat-foot { justify-content: flex-start; }
+
+/* 4) Make the mini-card image more prominent (lighter scrim, crisper image) */
+.lux-cat-mini::after {
+    background:
+        linear-gradient(to top, rgba(10, 15, 20, 0.78) 0%, rgba(10, 15, 20, 0.22) 42%, rgba(10, 15, 20, 0.05) 100%);
+}
+.lux-cat-mini-img { filter: drop-shadow(0 6px 14px rgba(0,0,0,.45)) saturate(1.08) contrast(1.05); }
