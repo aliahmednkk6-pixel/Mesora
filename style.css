@@ -6079,8 +6079,9 @@ html.tw-loading #compare-modal { display: none; }
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
+    padding: 10px 14px;
     z-index: 2;
     transition: transform .5s ease;
 }
@@ -6102,8 +6103,9 @@ html.tw-loading #compare-modal { display: none; }
     z-index: 1;
     pointer-events: none;
     background:
-        radial-gradient(55% 60% at 22% 50%, rgba(212, 175, 55, 0.14) 0%, transparent 70%),
-        radial-gradient(45% 55% at 78% 45%, rgba(90, 160, 220, 0.10) 0%, transparent 70%);
+        radial-gradient(52% 65% at 72% 50%, rgba(212, 175, 55, 0.16) 0%, transparent 72%),
+        radial-gradient(40% 55% at 70% 45%, rgba(70, 140, 210, 0.12) 0%, transparent 70%),
+        linear-gradient(0deg, rgba(11, 20, 27, 0.5), rgba(11, 20, 27, 0.5));
 }
 .mesora-category-card:hover .mesora-card-glow {
     background:
