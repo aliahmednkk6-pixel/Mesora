@@ -182,8 +182,8 @@
             }
         }
     </style>
-        <link rel="preload" href="style.css?v=1.1.1" as="style">
-    <link rel="stylesheet" href="style.css?v=1.1.1">
+        <link rel="preload" href="style.css?v=1.2.0" as="style">
+    <link rel="stylesheet" href="style.css?v=1.2.0">
     <link rel="preload"
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Exo+2:wght@600;700;800&family=Orbitron:wght@700;800&display=swap"
         as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -545,10 +545,11 @@
                 <span style="--x: 92%; --y: 25%; --delay: 3s; --size: 3px;"></span>
             </div>
 
-            <div class="container mx-auto px-4 md:px-6 relative z-10 max-w-3xl">
+            <div class="container mx-auto px-4 md:px-6 relative z-10 max-w-6xl">
                 
                 <!-- Section Header -->
                 <div class="text-center mb-6 md:mb-8 relative">
+                    <span class="lux-cat-eyebrow font-brand">MESORA &middot; Collection</span>
                     <div class="inline-flex items-center justify-center gap-4 mb-3">
                         <div class="station-line-decor">
                             <span class="station-line"></span>
@@ -567,180 +568,215 @@
                     </p>
                 </div>
 
-                <!-- Modern Glassmorphism Grid - Clean Shop Layout -->
-                <div class="glass-category-grid">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                <!-- Luxury Categories - MESORA Showcase -->
+                <div class="lux-cat-wrap">
 
-                        <!-- 01: تخزين -->
-                        <a href="#featured" class="glass-cat-card glass-cat-storage group" data-category="storage">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="hard-drive" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">01</span>
+                    <!-- Hero: 1 large Graphics Card (left) + 2 medium cards (right) -->
+                    <div class="lux-cat-hero">
+
+                        <!-- كروت الشاشة - رئيسية كبيرة (يسار) -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-featured" data-category="gpu">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tr" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-bl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="lux-cat-photo glass-cat-icon">
+                                <i data-lucide="gamepad-2" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="lux-cat-tag">MESORA &middot; Gaming</span>
+                                    <span class="glass-cat-num font-brand lux-cat-num">01</span>
                                 </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">تخزين</h4>
-                                <p class="text-[#8A9AAD] text-xs mt-1 mb-4 hidden md:block font-cairo">أقراص NVMe و SSD</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 75%; --bar-color: #F59E0B;"></div>
+                                <h4 class="glass-cat-name lux-cat-name font-bold text-white font-cairo">كروت الشاشة</h4>
+                                <p class="lux-cat-desc font-cairo">Graphics Cards &mdash; RTX &amp; RX أحدث جيل</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 90%; --bar-color: #e8c76a;"></div>
                                 </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(245,158,11,0.15); color: #F59E0B;">+18</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+23</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- المعالجات - متوسطة -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-medi" data-category="cpu">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="lux-cat-medi-photo glass-cat-icon">
+                                <i data-lucide="cpu" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="lux-cat-tag">Processor</span>
+                                    <span class="glass-cat-num font-brand lux-cat-num">02</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-l font-bold text-white font-cairo">المعالجات</h4>
+                                <p class="lux-cat-desc font-cairo">Intel &amp; AMD أحدث إصدار</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 70%; --bar-color: #2bd1c4;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+15</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
                                 </div>
                             </div>
                         </a>
 
-                        <!-- 02: RAM -->
-                        <a href="#featured" class="glass-cat-card glass-cat-ram group" data-category="ram">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="memory-stick" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">02</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">RAM</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">ذاكرة DDR4 / DDR5</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 60%; --bar-color: #10B981;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(16,185,129,0.15); color: #10B981;">+12</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
+                        <!-- لوحات أم - متوسطة -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-medi" data-category="motherboard">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="lux-cat-medi-photo glass-cat-icon">
+                                <i data-lucide="circuit-board" class="w-6 h-6"></i>
                             </div>
-                        </a>
-
-                        <!-- 03: كروت شاشة -->
-                        <a href="#featured" class="glass-cat-card glass-cat-gpu group" data-category="gpu">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="gamepad-2" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">03</span>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="lux-cat-tag">Motherboard</span>
+                                    <span class="glass-cat-num font-brand lux-cat-num">03</span>
                                 </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">كروت شاشة</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">RTX & RX جيل جديد</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 90%; --bar-color: #A855F7;"></div>
+                                <h4 class="glass-cat-name lux-cat-name-l font-bold text-white font-cairo">لوحات أم</h4>
+                                <p class="lux-cat-desc font-cairo">Intel &amp; AMD متوافق</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 55%; --bar-color: #e8c76a;"></div>
                                 </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(168,85,247,0.15); color: #A855F7;">+23</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- 04: معالجات -->
-                        <a href="#featured" class="glass-cat-card glass-cat-cpu group" data-category="cpu">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="microchip" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">04</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">معالجات</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">Intel & AMD أحدث إصدار</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 70%; --bar-color: #00E5FF;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(0,229,255,0.12); color: #00E5FF;">+15</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- 05: لوحات أم -->
-                        <a href="#featured" class="glass-cat-card glass-cat-mb group" data-category="motherboard">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="circuit-board" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">05</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">لوحات أم</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">Intel & AMD متوافق</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 55%; --bar-color: #06B6D4;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(6,182,212,0.12); color: #06B6D4;">+10</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- 06: مبردات -->
-                        <a href="#featured" class="glass-cat-card glass-cat-cooler group" data-category="cooling">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="fan" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">06</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">مبردات</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">مائي وهيائي</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 65%; --bar-color: #EAB308;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(234,179,8,0.12); color: #EAB308;">+16</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- 07: كيسات -->
-                        <a href="#featured" class="glass-cat-card glass-cat-case group" data-category="case">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="box" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">07</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">كيسات</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">تصاميم فاخرة</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 50%; --bar-color: #D97706;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(217,119,6,0.12); color: #D97706;">+14</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- 08: شاشات -->
-                        <a href="#featured" class="glass-cat-card glass-cat-monitor group" data-category="monitor">
-                            <div class="glass-cat-card-inner">
-                                <div class="glass-cat-icon-wrap">
-                                    <div class="glass-cat-icon">
-                                        <i data-lucide="monitor" class="w-6 h-6"></i>
-                                    </div>
-                                    <span class="glass-cat-num font-brand text-lg">08</span>
-                                </div>
-                                <h4 class="glass-cat-name font-bold text-white text-sm font-cairo mt-2">شاشات</h4>
-                                <p class="text-[#8A9AAD] text-[11px] mt-1 mb-4 hidden md:block font-cairo">Gaming و 4K</p>
-                                <div class="glass-cat-progress mb-3">
-                                    <div class="glass-cat-progress-bar" style="--progress: 80%; --bar-color: #EF4444;"></div>
-                                </div>
-                                <div class="glass-cat-foot flex items-center justify-between">
-                                    <span class="glass-cat-count text-[0.65rem] font-bold px-2 py-0.5 rounded-full" style="background: rgba(239,68,68,0.12); color: #EF4444;">+20</span>
-                                    <span class="glass-cat-btn text-[11px]"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+10</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i> تصفح</span>
                                 </div>
                             </div>
                         </a>
 
                     </div>
+                    <!-- Bottom row: 5 equal cards -->
+                    <div class="lux-cat-row">
+
+                        <!-- التخزين -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-mini" data-category="storage">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="glass-cat-icon lux-cat-mini-icon">
+                                <i data-lucide="hard-drive" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="glass-cat-num font-brand lux-cat-num">04</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-s font-bold text-white font-cairo">التخزين</h4>
+                                <p class="lux-cat-desc font-cairo">NVMe &amp; SSD</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 75%; --bar-color: #e8c76a;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+18</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- الذاكرة RAM -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-mini" data-category="ram">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="glass-cat-icon lux-cat-mini-icon">
+                                <i data-lucide="memory-stick" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="glass-cat-num font-brand lux-cat-num">05</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-s font-bold text-white font-cairo">الذاكرة RAM</h4>
+                                <p class="lux-cat-desc font-cairo">DDR4 / DDR5</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 60%; --bar-color: #2bd1c4;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+12</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- مبردات -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-mini" data-category="cooling">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="glass-cat-icon lux-cat-mini-icon">
+                                <i data-lucide="fan" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="glass-cat-num font-brand lux-cat-num">06</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-s font-bold text-white font-cairo">مبردات</h4>
+                                <p class="lux-cat-desc font-cairo">مائي وهيائي</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 65%; --bar-color: #2bd1c4;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+16</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- كيسات -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-mini" data-category="case">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="glass-cat-icon lux-cat-mini-icon">
+                                <i data-lucide="box" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="glass-cat-num font-brand lux-cat-num">07</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-s font-bold text-white font-cairo">كيسات</h4>
+                                <p class="lux-cat-desc font-cairo">تصاميم فاخرة</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 50%; --bar-color: #e8c76a;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+14</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- شاشات -->
+                        <a href="#featured" class="glass-cat-card lux-cat-card lux-cat-mini" data-category="monitor">
+                            <span class="lux-cat-pat" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-tl" aria-hidden="true"></span>
+                            <span class="lux-cat-corner lux-corner-br" aria-hidden="true"></span>
+                            <div class="glass-cat-icon lux-cat-mini-icon">
+                                <i data-lucide="monitor" class="w-6 h-6"></i>
+                            </div>
+                            <div class="lux-cat-body glass-cat-card-inner">
+                                <div class="lux-cat-top">
+                                    <span class="glass-cat-num font-brand lux-cat-num">08</span>
+                                </div>
+                                <h4 class="glass-cat-name lux-cat-name-s font-bold text-white font-cairo">شاشات</h4>
+                                <p class="lux-cat-desc font-cairo">Gaming و 4K</p>
+                                <div class="glass-cat-progress lux-cat-progress">
+                                    <div class="glass-cat-progress-bar" style="--progress: 80%; --bar-color: #e8c76a;"></div>
+                                </div>
+                                <div class="glass-cat-foot lux-cat-foot">
+                                    <span class="glass-cat-count lux-cat-count text-[0.7rem] font-bold px-2 py-0.5 rounded-full">+20</span>
+                                    <span class="lux-cat-btn glass-cat-btn text-xs"><i data-lucide="arrow-left" class="w-3 h-3"></i></span>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
+
                 </div>
+
 
             </div>
         </section>
