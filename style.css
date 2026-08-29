@@ -6079,13 +6079,13 @@ html.tw-loading #compare-modal { display: none; }
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
 
     z-index: 2;
     transition: transform .5s ease;
-    -webkit-mask-image: radial-gradient(ellipse 80% 85% at 55% 50%, #000 52%, transparent 84%);
-    mask-image: radial-gradient(ellipse 80% 85% at 55% 50%, #000 52%, transparent 84%);
+
+
 }
 .mesora-category-card:hover .mesora-category-image { transform: scale(1.04); }
 .mesora-card-overlay {
@@ -6093,10 +6093,10 @@ html.tw-loading #compare-modal { display: none; }
     inset: 0;
     z-index: 3;
     pointer-events: none;
-    background: linear-gradient(270deg,
-        rgba(5, 10, 14, .30) 0%,
-        rgba(5, 10, 14, .18) 45%,
-        rgba(5, 10, 14, .10) 100%
+    background: linear-gradient(90deg,
+        rgba(5, 10, 14, .92) 0%,
+        rgba(5, 10, 14, .55) 30%,
+        rgba(5, 10, 14, .06) 60%
         );
 }
 .mesora-card-glow {
@@ -6204,6 +6204,27 @@ html.tw-loading #compare-modal { display: none; }
     box-shadow: 0 0 15px rgba(212, 175, 55, .25);
 }
 .mesora-category-card:hover .mesora-btn-icon { transform: translateX(-3px); }
+
+/* 10) Touch devices: pulse the arrow so cards feel tappable */
+@media (hover: none) {
+    .mesora-explore-btn .mesora-btn-icon {
+        animation: mesora-arrow-pulse 1.6s ease-in-out infinite;
+    }
+}
+@keyframes mesora-arrow-pulse {
+    0%, 100% { transform: translateX(0); opacity: 1; }
+    50%      { transform: translateX(-4px); opacity: .65; }
+}
+
+/* 7) Scroll reveal */
+.mesora-category-card.mesora-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+}
+.mesora-category-card.mesora-reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 @media (max-width: 1200px) {
     .mesora-top-grid { grid-template-columns: 1.5fr 1fr; }
